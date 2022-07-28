@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/07/28 10:43:21 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/07/28 23:08:11 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,12 @@ void	read_map(t_data *data)
 
 void	initial(t_data *data)
 {
+	data->player.turndirection= 0;
+	data->player.walkdirection= 0;
+	data->player.radius = 8;
+	data->player.rotatespeed = .1;
+	data->player.walkspeed = .1;
+
 	data->put_in_x = 0;
 	data->put_in_y = 0;
 	data->row = 0;
@@ -55,14 +61,10 @@ void	initial(t_data *data)
 	data->mlx = mlx_init();
 	data->wind = mlx_new_window(data->mlx, data->row * SIZE_, data->col * SIZE_, "Cube3D");
 	data->img = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
+	data->map_gb = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
+	data->map_wall = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
 	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length, &data->endian);
 
-	data->player.movespeed= 0;
-	data->player.turndirection= 0;
-	data->player.walkdirection= 0;
-	data->player.radius = 8;
-	data->player.rotatespeed = 1;
-	data->player.walkspeed = 2;
 }
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
