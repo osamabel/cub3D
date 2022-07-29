@@ -6,15 +6,14 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/07/28 23:10:31 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/07/29 16:25:25 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE_H
 #define CUBE_H
 #define  SIZE_ 50
-#define  ROW 5
-#define  COL 5
+
 
 #include <mlx.h>
 #include <stdio.h>
@@ -29,11 +28,23 @@ typedef struct	s_player {
 	float	y;
 	int	turndirection;
 	int	walkdirection;
+	int	sidedirection;
 	float radius;
 	float rotatedirection;
 	float rotatespeed;
 	float walkspeed;
+	int key;
 }	t_player;
+
+typedef struct	s_point {
+	int	x;
+	int	y;
+}	t_point;
+
+typedef struct	s_info {
+	t_point	*walls;
+	int		blocks;
+}	t_info;
 
 typedef struct	s_data {
 	void	*mlx;
@@ -52,6 +63,7 @@ typedef struct	s_data {
 	int 	put_in_y;
 	int 	x;
 	int 	y;
+	t_info	info;
 	t_player player;
 }	t_data;
 
@@ -59,7 +71,7 @@ void	read_map(t_data *data);
 void	initial(t_data *data);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int		is_player(char c);
-void	update(t_data *data);
+void	update_player(t_data *data);
 void	background(t_data *data);
 void	re_background(t_data *data);
 // void put_block(t_data *data, int color);
