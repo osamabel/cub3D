@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/07/29 19:02:37 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/07/29 20:12:02 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,37 +31,6 @@ int keyprelease(int keycode, void *parm)
 	return 0;
 }
 
-int	is_wall_front_player(t_data *data, int var)
-{
-	int i = 0;
-	int next_x, next_y;
-	int bloc_x, bloc_y;
-	if (var)
-	{
-		next_x = cos(data->player.rotatedirection + M_PI_2) * data->player.walkspeed * data->player.sidedirection;
-		next_y = -sin(data->player.rotatedirection + M_PI_2) * data->player.walkspeed * data->player.sidedirection;
-	}
-	else
-	{
-		next_x = cos(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection;
-		next_y = -sin(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection;
-	}
-	if (data->player.key == 13 || data->player.key == 0)
-	{
-		bloc_x = SIZE_ * (int)(next_x/SIZE_);
-		bloc_y = SIZE_ * (int)(next_y/SIZE_);
-	}
-	while (i < data->info.blocks)
-	{
-		if (data->info.walls[i].x == bloc_x && data->info.walls[i].y == bloc_y)
-			break;
-		i++;
-	}
-	if (i == data->info.blocks)
-		return (1);
-	return (0);
-}
-
 int keypress(int keycode, void *parm)
 {
 	t_data *data;
@@ -82,6 +51,47 @@ int keypress(int keycode, void *parm)
 	data->player.key = keycode;
 	return 0;
 }
+
+int	is_wall_front_player(t_data *data, int var)
+{
+	int i = 0;
+	float next_x, next_y;
+	int bloc_x, bloc_y;
+	if (var)
+	{
+		printf("var\n");
+		next_x = (data->player.x + cos(data->player.rotatedirection + M_PI_2) * data->player.walkspeed * data->player.sidedirection) * SIZE_;
+		next_y = (data->player.y + -sin(data->player.rotatedirection + M_PI_2) * data->player.walkspeed * data->player.sidedirection) * SIZE_;
+	}
+	else
+	{
+		next_x = (data->player.x + cos(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection) * SIZE_;
+		next_y = (data->player.y + -sin(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection) * SIZE_;
+	}
+	printf("x = %f, y = %f\n",next_x,next_y);
+	if (data->player.key == 13 || data->player.key == 0)
+	{
+		bloc_x = SIZE_ * (int)(next_x/SIZE_);
+		bloc_y = SIZE_ * (int)(next_y/SIZE_) ;
+	}
+	if (data->player.key == 1 || data->player.key == 2)
+	{
+		bloc_x = SIZE_ * (int)(next_x/SIZE_) + SIZE_;
+		bloc_y = SIZE_ * (int)(next_y/SIZE_) + SIZE_;
+	}
+	printf("Bx = %d, By = %d\n\n",bloc_x,bloc_y);
+	while (i < data->info.blocks)
+	{
+		if (data->info.walls[i].x == bloc_x && data->info.walls[i].y == bloc_y)
+			break;
+		i++;
+	}
+	printf("Bx = %d,",i);
+	if (i == data->info.blocks)
+		return (1);
+	return (0);
+}
+
 
 void	update_player(t_data *data)
 {
