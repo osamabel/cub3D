@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/07/29 16:25:45 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/07/30 10:11:32 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	initial(t_data *data)
 	data->mlx = mlx_init();
 	data->wind = mlx_new_window(data->mlx, data->row * SIZE_, data->col * SIZE_, "Cube3D");
 	data->img = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
+	data->player_img = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
 	data->map_gb = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
 	data->map_wall = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
 	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length, &data->endian);
@@ -80,4 +81,27 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 int	is_player(char c)
 {
 	return (c == 'N' || c == 'E' || c == 'S' || c == 'W');
+}
+
+void save_walls_position(t_data *data)
+{
+	int i = 0;
+	int j = 0;
+	int z = 0;
+
+	while (data->map[j])
+	{
+		i = 0;
+		while (data->map[j][i])
+		{
+			if (data->map[j][i] == '1')
+			{
+				data->info.walls[z].x = i;
+				data->info.walls[z].y = j;
+				z++;
+			}
+			i++;
+		}
+		j++;
+	}
 }
