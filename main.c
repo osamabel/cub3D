@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/07/30 13:39:22 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/07/30 21:43:19 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,32 @@ int keypress(int keycode, void *parm)
 		data->player.sidedirection = 1;
 	if (keycode == 2) //  D
 		data->player.sidedirection = -1;
-	data->player.key = keycode;
 	return 0;
+}
+
+
+
+void	raycasting(t_data *data)
+{
+	float dx,dy;
+
+	dy = data->player.y * SIZE_;
+	if (sin(data->player.rotatedirection) > 0)
+		data->player.ray.end_y = SIZE_ * (int)(dy/SIZE_);
+	if (sin(data->player.rotatedirection) < 0)
+		data->player.ray.end_y = SIZE_ * (int)(dy/SIZE_) + SIZE_;
+	dy = data->player.y * SIZE_ - data->player.ray.end_y;
+	dx = dy / tan(data->player.rotatedirection);
+	data->player.ray.dx += dx;
+	data->player.ray.dy += dy;
+	if (sin(data->player.rotatedirection) > 0)
+		data->player.ray.end_x = data->player.x * SIZE_ + dx;
+	if (cos(data->player.rotatedirection) < 0 && sin(data->player.rotatedirection) < 0)
+		data->player.ray.end_x = data->player.x * SIZE_ + dx + SIZE_PLYR;
+
+	printf("[X = %f, Y = %f]\n",data->player.x * SIZE_, data->player.y * SIZE_);
+	printf("[%f]\n",data->player.rotatedirection);
+	printf("[endX = %f, endY = %f]\n\n",data->player.ray.end_x, data->player.ray.end_y );
 }
 
 void	update_player(t_data *data)
@@ -66,6 +90,9 @@ void	update_player(t_data *data)
 	}
 	if (data->player.turndirection)
 		data->player.rotatedirection += data->player.turndirection * data->player.rotatespeed;
+
+	raycasting(data);
+
 	data->player_img = mlx_xpm_file_to_image(data->mlx, "images/person_1.xpm", &data->x, &data->y);
 	mlx_put_image_to_window(data->mlx, data->wind, data->player_img, data->player.x * SIZE_, data->player.y * SIZE_);
 }

@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/07/30 10:45:15 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/07/30 17:22:50 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,31 @@
 #include "get_next_line/get_next_line.h"
 #include "libft/libft.h"
 
+typedef struct	s_ray {
+	float	end_x;
+	float 	end_y;
+	float	dx;
+	float 	dy;
+	float	distance;
+}	t_ray;
+
+typedef struct	s_point {
+	int	x;
+	int	y;
+}	t_point;
+
 typedef struct	s_player {
 	float	x;
 	float	y;
 	int	turndirection;
 	int	walkdirection;
 	int	sidedirection;
-	float radius;
 	float rotatedirection;
 	float rotatespeed;
 	float walkspeed;
-	int key;
+	t_ray	ray;
 }	t_player;
 
-typedef struct	s_point {
-	int	x;
-	int	y;
-}	t_point;
 
 typedef struct	s_info {
 	t_point	*walls;
@@ -61,8 +69,6 @@ typedef struct	s_data {
 	int		row;
 	int		col;
 	char	**map;
-	int 	put_in_x;
-	int 	put_in_y;
 	int 	x;
 	int 	y;
 	t_info	info;

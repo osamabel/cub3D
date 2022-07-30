@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/07/30 10:11:32 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/07/30 17:22:45 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,12 @@ void	initial(t_data *data)
 	data->player.turndirection= 0;
 	data->player.walkdirection= 0;
 	data->player.sidedirection= 0;
-	data->player.radius = 0;
 	data->player.rotatespeed = .1;
 	data->player.walkspeed = .05;
+	data->player.ray.dx = 0;
+	data->player.ray.dy = 0;
 
-	data->put_in_x = 0;
-	data->put_in_y = 0;
+
 	data->row = 0;
 	data->col = 0;
 	read_map(data);
