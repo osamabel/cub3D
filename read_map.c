@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/07/30 17:22:45 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/01 16:29:00 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,12 @@ void	initial(t_data *data)
 	data->player.turndirection= 0;
 	data->player.walkdirection= 0;
 	data->player.sidedirection= 0;
-	data->player.rotatespeed = .1;
+	data->player.rotatespeed = .05;
 	data->player.walkspeed = .05;
-	data->player.ray.dx = 0;
-	data->player.ray.dy = 0;
+	data->player.ray.h_dx = 0;
+	data->player.ray.h_dy = 0;
+	data->player.ray.v_dx = 0;
+	data->player.ray.v_dy = 0;
 
 
 	data->row = 0;
@@ -65,6 +67,7 @@ void	initial(t_data *data)
 	data->wind = mlx_new_window(data->mlx, data->row * SIZE_, data->col * SIZE_, "Cube3D");
 	data->img = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
 	data->player_img = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
+	data->ray = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
 	data->map_gb = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
 	data->map_wall = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
 	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length, &data->endian);
@@ -96,8 +99,8 @@ void save_walls_position(t_data *data)
 		{
 			if (data->map[j][i] == '1')
 			{
-				data->info.walls[z].x = i;
-				data->info.walls[z].y = j;
+				data->info.walls[z].x = i * SIZE_;
+				data->info.walls[z].y = j * SIZE_;
 				z++;
 			}
 			i++;

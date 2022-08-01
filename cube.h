@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/07/30 17:22:50 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/01 16:34:29 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,21 @@
 #include "libft/libft.h"
 
 typedef struct	s_ray {
-	float	end_x;
-	float 	end_y;
-	float	dx;
-	float 	dy;
-	float	distance;
+	float	h_x;
+	float 	h_y;
+	float	v_x;
+	float 	v_y;
+	float	h_dx;
+	float 	h_dy;
+	float	v_dx;
+	float 	v_dy;
+	float	h_distance;
+	float	h_distance;
 }	t_ray;
 
 typedef struct	s_point {
-	int	x;
-	int	y;
+	float	x;
+	float	y;
 }	t_point;
 
 typedef struct	s_player {
@@ -59,10 +64,12 @@ typedef struct	s_data {
 	void	*mlx;
 	void	*wind;
 	void	*img;
+	void	*ray;
 	void	*map_gb;
 	void	*player_img;
 	void	*map_wall;
 	char	*addr;
+	char	*addr_ray;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
@@ -83,6 +90,7 @@ void	update_player(t_data *data);
 void	background(t_data *data);
 void	re_background(t_data *data);
 void	save_walls_position(t_data *data);
+int		check_wall_h_points(t_data *data, float x, float y);
 // void put_block(t_data *data, int color);
 // void re_draw(t_data *data);
 // void draw_map(t_data *data);
