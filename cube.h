@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/01 16:34:29 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/01 18:21:04 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct	s_ray {
 	float	v_dx;
 	float 	v_dy;
 	float	h_distance;
-	float	h_distance;
+	float	v_distance;
 }	t_ray;
 
 typedef struct	s_point {
@@ -91,6 +91,7 @@ void	background(t_data *data);
 void	re_background(t_data *data);
 void	save_walls_position(t_data *data);
 int		check_wall_h_points(t_data *data, float x, float y);
+int		check_wall_v_points(t_data *data, float x, float y);
 // void put_block(t_data *data, int color);
 // void re_draw(t_data *data);
 // void draw_map(t_data *data);

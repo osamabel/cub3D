@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/01 16:29:00 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/01 18:31:22 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	initial(t_data *data)
 	data->player.ray.h_dy = 0;
 	data->player.ray.v_dx = 0;
 	data->player.ray.v_dy = 0;
+
 
 
 	data->row = 0;
