@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 10:10:30 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/01 15:50:53 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/02 20:35:25 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ void	background(t_data *data)
 				data->player.x = i;
 				data->player.y = j;
 				if (data->map[j][i] == 'N')
-					data->player.rotatedirection = M_PI/3;
+					data->player.rotatedirection = M_PI_2;
 				if (data->map[j][i] == 'E')
 					data->player.rotatedirection = 0;
 				if (data->map[j][i] == 'S')
-					data->player.rotatedirection = 3 * M_PI_2;
+					data->player.rotatedirection = 3 * M_PI_2 - 0.22;
 				if (data->map[j][i] == 'W')
 					data->player.rotatedirection = M_PI;
 				data->player_img = mlx_xpm_file_to_image(data->mlx, "images/person_1.xpm", &data->x, &data->y);

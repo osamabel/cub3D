@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/01 18:21:04 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/03 09:34:17 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ typedef struct	s_data {
 	void	*mlx;
 	void	*wind;
 	void	*img;
-	void	*ray;
+	void	*ray_h;
+	void	*ray_v;
 	void	*map_gb;
 	void	*player_img;
 	void	*map_wall;
@@ -90,8 +91,8 @@ void	update_player(t_data *data);
 void	background(t_data *data);
 void	re_background(t_data *data);
 void	save_walls_position(t_data *data);
-int		check_wall_h_points(t_data *data, float x, float y);
-int		check_wall_v_points(t_data *data, float x, float y);
+void	horizontal_points(t_data *data);
+void	vertical_points(t_data *data);
 // void put_block(t_data *data, int color);
 // void re_draw(t_data *data);
 // void draw_map(t_data *data);
