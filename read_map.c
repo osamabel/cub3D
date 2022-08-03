@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/03 08:55:51 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/03 13:42:19 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,14 @@ void	initial(t_data *data)
 	data->player.turndirection= 0;
 	data->player.walkdirection= 0;
 	data->player.sidedirection= 0;
-	data->player.rotatespeed = .03;
+	data->player.rotatespeed = .05;
 	data->player.walkspeed = .05;
 	data->player.ray.h_dx = 0;
 	data->player.ray.h_dy = 0;
 	data->player.ray.v_dx = 0;
 	data->player.ray.v_dy = 0;
-
+	pthread_mutex_init(&data->treads.x, NULL);
+	pthread_mutex_init(&data->treads.y, NULL);
 
 
 	data->row = 0;

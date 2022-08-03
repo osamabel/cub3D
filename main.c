@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/03 09:40:57 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/03 14:44:30 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,31 +92,29 @@ void	update_player(t_data *data)
 		data->player.x += cos(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection;
 		data->player.y += -sin(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection;
 	}
-	data->player.ray.h_x = data->player.x * SIZE_ + SIZE_PLYR/2;
-	data->player.ray.h_y = data->player.y * SIZE_ + SIZE_PLYR/2;
-	data->player.ray.v_x = data->player.x * SIZE_ + SIZE_PLYR/2;
-	data->player.ray.v_y = data->player.y * SIZE_ + SIZE_PLYR/2;
 	if (data->player.turndirection)
 		data->player.rotatedirection += data->player.turndirection * data->player.rotatespeed;
-	horizontal_points(data);
-	vertical_points(data);
+	if (data->player.turndirection || data->player.walkdirection || data->player.sidedirection)
+	{
+		data->player.ray.h_x = data->player.x * SIZE_ + SIZE_PLYR/2;
+		data->player.ray.h_y = data->player.y * SIZE_ + SIZE_PLYR/2;
+		data->player.ray.v_x = data->player.x * SIZE_ + SIZE_PLYR/2;
+		data->player.ray.v_y = data->player.y * SIZE_ + SIZE_PLYR/2;
+		horizontal_points(data);
+		vertical_points(data);
+	}
+
 	data->player_img = mlx_xpm_file_to_image(data->mlx, "images/person_1.xpm", &data->x, &data->y);
 	mlx_put_image_to_window(data->mlx, data->wind, data->player_img, data->player.x * SIZE_, data->player.y * SIZE_);
-	draw_ray(data, data->player.ray.h_x,data->player.ray.h_y, "images/blue.xpm", data->ray_h);
-	draw_ray(data, data->player.ray.v_x,data->player.ray.v_y, "images/red.xpm",data->ray_v);
-	// if (data->player.ray.v_distance < data->player.ray.h_distance)
-	// {
-	// 	printf("LL\n");
-	// }
-	// else
-	// {
-	// 	printf("1LL\n");
-	// }
-	// draw_ray(data, data->player.ray.v_x,data->player.ray.v_y);
+	if (data->player.ray.v_distance < data->player.ray.h_distance)
+		draw_ray(data, data->player.ray.v_x,data->player.ray.v_y, "images/red.xpm",data->ray_v);
+	else
+		draw_ray(data, data->player.ray.h_x,data->player.ray.h_y, "images/blue.xpm", data->ray_h);
 }
 
 int draw(t_data *data)
 {
+	mlx_clear_window(data->mlx, data->wind);
 	re_background(data);
 	update_player(data);
 	return (0);
@@ -129,12 +127,6 @@ int main(void)
 	background(&data);
 	data.info.walls = malloc(sizeof(t_point) * data.info.blocks);
 	save_walls_position(&data);
-		// int i = 0;
-		// while(i < data.info.blocks)
-		// {
-		// 	printf("Wx = %f / Wy = %f \n",data.info.walls[i].x, data.info.walls[i].y);
-		// 	i++;
-		// }
 	mlx_loop_hook(data.mlx, draw, &data);
 	mlx_hook(data.wind, 3, 0, keyprelease, &data);
 	mlx_hook(data.wind, 2, 0, keypress, &data);

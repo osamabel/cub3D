@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 09:01:56 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/03 09:39:48 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/03 13:46:29 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int check_wall_v_points(t_data *data, float x, float y)
 		x = (int)((x - 0.1)/SIZE_) * SIZE_;
 	while(i < data->info.blocks && !(x == data->info.walls[i].x && y == data->info.walls[i].y))
 		i++;
-	if (i < data->info.blocks)
+	if (data->map[(int)y / SIZE_][(int)x / SIZE_] == '1')
 		return (1);
 	return (0);
 }
@@ -60,8 +60,8 @@ void	vertical_points(t_data *data)
 		}
 		j++;
 	}
-	// data->player.ray.v_distance = sqrt(pow(data->player.ray.v_dx, 2) + pow(data->player.ray.v_dy, 2));
-	// data->player.ray.v_dx = 0;
-	// data->player.ray.v_dy = 0;
+	data->player.ray.v_distance = sqrt(pow(data->player.ray.v_dx, 2) + pow(data->player.ray.v_dy, 2));
+	data->player.ray.v_dx = 0;
+	data->player.ray.v_dy = 0;
 }
 

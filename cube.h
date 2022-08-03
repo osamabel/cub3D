@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/03 09:34:17 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/03 10:23:46 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 
 #include <mlx.h>
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -60,6 +61,13 @@ typedef struct	s_info {
 	int		blocks;
 }	t_info;
 
+typedef struct s_treads {
+	pthread_t horizontal;
+	pthread_t vertical;
+	pthread_mutex_t	x;
+	pthread_mutex_t	y;
+}	t_treads;
+
 typedef struct	s_data {
 	void	*mlx;
 	void	*wind;
@@ -81,12 +89,14 @@ typedef struct	s_data {
 	int 	y;
 	t_info	info;
 	t_player player;
+	t_treads	treads;
 }	t_data;
 
 void	read_map(t_data *data);
 void	initial(t_data *data);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int		is_player(char c);
+int draw(t_data *data);
 void	update_player(t_data *data);
 void	background(t_data *data);
 void	re_background(t_data *data);

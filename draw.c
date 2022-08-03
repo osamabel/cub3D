@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 10:10:30 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/02 20:35:25 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/03 11:07:52 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,10 @@ void	background(t_data *data)
 			{
 				data->player.x = i;
 				data->player.y = j;
+				data->player.ray.h_x = data->player.x * SIZE_ + SIZE_PLYR/2;
+				data->player.ray.h_y = data->player.y * SIZE_ + SIZE_PLYR/2;
+				data->player.ray.v_x = data->player.x * SIZE_ + SIZE_PLYR/2;
+				data->player.ray.v_y = data->player.y * SIZE_ + SIZE_PLYR/2;
 				if (data->map[j][i] == 'N')
 					data->player.rotatedirection = M_PI_2;
 				if (data->map[j][i] == 'E')
@@ -73,4 +77,5 @@ void	background(t_data *data)
 		}
 		j++;
 	}
+	mlx_clear_window(data->mlx, data->wind);
 }
