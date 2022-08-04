@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/03 14:44:30 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/04 20:27:30 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,32 @@ void	draw_ray(t_data *data, float _x, float _y, char *color, void *img)
 	}
 }
 
+float min_ray(float _h, float _v)
+{
+	if (_h > _v)
+		return (_v);
+	return (_h);
+}
+
+int	wall_check(t_data *data)
+{
+	float	x;
+	float	y;
+	x = data->player.x * SIZE_ + SIZE_PLYR/2;
+	y = data->player.y * SIZE_ + SIZE_PLYR/2;
+	x += cos(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection;
+	y += -sin(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection;
+	x = (int)(x / SIZE_) * SIZE_;
+	y = (int)(y / SIZE_) * SIZE_;
+	printf("P[%f, %f]\n",data->player.x, data->player.y);
+	printf("[%d, %d]\n",(int)x / SIZE_, (int)y/ SIZE_);
+	printf("[%f, %f]\n",x, y);
+	printf("[%c]\n\n",data->map[(int)x / SIZE_][(int)y / SIZE_]);
+	if (data->map[(int)y / SIZE_][(int)x / SIZE_] == '1')
+		return (1);
+	return (0);
+}
+
 void	update_player(t_data *data)
 {
 	if (data->player.sidedirection)
@@ -94,28 +120,39 @@ void	update_player(t_data *data)
 	}
 	if (data->player.turndirection)
 		data->player.rotatedirection += data->player.turndirection * data->player.rotatespeed;
+	float angle = data->player.rotatedirection;
 	if (data->player.turndirection || data->player.walkdirection || data->player.sidedirection)
 	{
 		data->player.ray.h_x = data->player.x * SIZE_ + SIZE_PLYR/2;
 		data->player.ray.h_y = data->player.y * SIZE_ + SIZE_PLYR/2;
 		data->player.ray.v_x = data->player.x * SIZE_ + SIZE_PLYR/2;
 		data->player.ray.v_y = data->player.y * SIZE_ + SIZE_PLYR/2;
-		horizontal_points(data);
-		vertical_points(data);
-	}
+		mlx_clear_window(data->mlx, data->wind);
+		re_background(data);
+		
+		
 
-	data->player_img = mlx_xpm_file_to_image(data->mlx, "images/person_1.xpm", &data->x, &data->y);
-	mlx_put_image_to_window(data->mlx, data->wind, data->player_img, data->player.x * SIZE_, data->player.y * SIZE_);
-	if (data->player.ray.v_distance < data->player.ray.h_distance)
-		draw_ray(data, data->player.ray.v_x,data->player.ray.v_y, "images/red.xpm",data->ray_v);
-	else
-		draw_ray(data, data->player.ray.h_x,data->player.ray.h_y, "images/blue.xpm", data->ray_h);
+		
+		horizontal_points(data, angle);
+		vertical_points(data, angle);
+		if (data->player.ray.v_distance < data->player.ray.h_distance)
+		{
+			printf("Direct = (%f, %f)\n",data->player.ray.v_x, data->player.ray.v_y);
+			draw_ray(data, data->player.ray.v_x,data->player.ray.v_y, "images/red.xpm",data->ray_v);
+		}
+		else
+		{
+			printf("Direct = (%f, %f)\n",data->player.ray.h_x, data->player.ray.h_y);
+			draw_ray(data, data->player.ray.h_x,data->player.ray.h_y, "images/blue.xpm",data->ray_h);
+		}
+		data->player_img = mlx_xpm_file_to_image(data->mlx, "images/player_3.xpm", &data->x, &data->y);
+		mlx_put_image_to_window(data->mlx, data->wind, data->player_img, data->player.x * SIZE_, data->player.y * SIZE_);
+		mlx_destroy_image(data->mlx, data->player_img);
+	}
 }
 
 int draw(t_data *data)
 {
-	mlx_clear_window(data->mlx, data->wind);
-	re_background(data);
 	update_player(data);
 	return (0);
 }

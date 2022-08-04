@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/03 13:42:19 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/04 19:09:27 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,22 @@ void	initial(t_data *data)
 	data->player.turndirection= 0;
 	data->player.walkdirection= 0;
 	data->player.sidedirection= 0;
-	data->player.rotatespeed = .05;
-	data->player.walkspeed = .05;
+	data->player.rotatespeed = .1;
+	data->player.walkspeed = .1;
 	data->player.ray.h_dx = 0;
 	data->player.ray.h_dy = 0;
 	data->player.ray.v_dx = 0;
 	data->player.ray.v_dy = 0;
-	pthread_mutex_init(&data->treads.x, NULL);
-	pthread_mutex_init(&data->treads.y, NULL);
 
 
 	data->row = 0;
 	data->col = 0;
 	read_map(data);
 	data->mlx = mlx_init();
-	data->wind = mlx_new_window(data->mlx, data->row * SIZE_, data->col * SIZE_, "Cube3D");
+	data->wind = mlx_new_window(data->mlx, WIDTH, HEIGHT, "Cube3D");
 	data->img = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
 	data->player_img = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
+	data->player_img_reset = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
 	data->ray_h = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
 	data->ray_v = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
 	data->map_gb = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
@@ -110,4 +109,11 @@ void save_walls_position(t_data *data)
 		}
 		j++;
 	}
+}
+
+int	point_in_range(t_data *data, float x, float y)
+{
+	if (x < data->row * SIZE_ && x > 0 && y < data->col * SIZE_ && y > 0)
+		return (1);
+	return (0);
 }
