@@ -6,12 +6,12 @@
 #    By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/25 09:40:30 by obelkhad          #+#    #+#              #
-#    Updated: 2022/08/03 16:48:12 by obelkhad         ###   ########.fr        #
+#    Updated: 2022/08/07 14:52:19 by obelkhad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 NAME = cube
 SRC = libft/ft_atoi.c libft/ft_bzero.c libft/ft_calloc.c libft/ft_isalnum.c libft/ft_isalpha.c libft/ft_isascii.c libft/ft_isdigit.c \
 	libft/ft_isprint.c libft/ft_itoa.c libft/ft_memchr.c libft/ft_memcmp.c libft/ft_memcpy.c libft/ft_memmove.c libft/ft_memset.c libft/ft_putchar_fd.c \
@@ -20,15 +20,15 @@ SRC = libft/ft_atoi.c libft/ft_bzero.c libft/ft_calloc.c libft/ft_isalnum.c libf
 	libft/ft_strtrim.c libft/ft_substr.c libft/ft_tolower.c libft/ft_toupper.c libft/ft_lstadd_front.c libft/ft_lstlast.c libft/ft_lstnew.c libft/ft_lstsize.c \
 	libft/ft_lstadd_back.c libft/ft_lstdelone.c libft/ft_lstclear.c libft/ft_lstiter.c libft/ft_lstmap.c
 SRC += get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
-SRC += main.c read_map.c draw.c vertical_points.c horizontal_points.c
+SRC += main.c src/read_map.c src/draw.c src/vertical_points.c src/horizontal_points.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJ) cube.h
-	cc $(CFLAGS) -o $(NAME) $(OBJ) -L /usr/local/lib -lmlx -framework OpenGL -framework AppKit
+	cc $(CFLAGS) -I. -o $(NAME) $(OBJ) -L /usr/local/lib -lmlx -framework OpenGL -framework AppKit
 .c.o: cube.h
-	cc $(CFLAGS) -Imlx -c $< -o $@
+	cc $(CFLAGS) -I. -Imlx -c $< -o $@
 clean:
 	rm -f $(NAME) $(OBJ)
 fclean: clean

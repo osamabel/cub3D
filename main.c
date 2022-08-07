@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/04 20:27:30 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/07 15:56:29 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,63 +51,127 @@ int keypress(int keycode, void *parm)
 	return 0;
 }
 
-void	draw_ray(t_data *data, float _x, float _y, char *color, void *img)
+void	draw_xray(t_data *data, float Bx, float By)
 {
-	float Px = data->player.x * SIZE_ + SIZE_PLYR/2,Py = data->player.y * SIZE_ + SIZE_PLYR/2;
-	float dx = _x - Px,dy = _y - Py,step,xin,yin,x = Px,y = Py,l=0;
-
-	img = mlx_xpm_file_to_image(data->mlx, color, &data->x, &data->y);
+	float Ax = data->player.x * SIZE_ + SIZE_PLYR / 2;
+	float Ay = data->player.y * SIZE_ + SIZE_PLYR / 2;
+	float dx = Bx - Ax;
+	float dy = By - Ay;
+	float step;
+	float i = 0;
+	int pixel;
+	int color = 0xff4d4d;
 	if (dx >= dy)
-	{
-		if (dx < 0)
-			step = -dx;
-		else
-			step = dx;
-	}
+		step = fabs(dx);
 	else
-		if (dy < 0)
-			step = -dy;
-		else
-			step = dy;
-	xin = dx / step;
-	yin = dy / step;
-	while (l < step)
+		step = fabs(dy);
+	while (i < step)
 	{
-		x = x + xin;
-		y = y + yin;
-		mlx_put_image_to_window(data->mlx, data->wind, img, x, y);
-		l++;
+		Ax += dx / step;
+		Ay += dy / step;
+		pixel = ((int)Ay * data->line_length) + ((int)Ax * 4);
+		if (pixel > 0)
+		{
+			data->addr[pixel + 0] = (color) & 0xFF;
+			data->addr[pixel + 1] = (color >> 8) & 0xFF;
+			data->addr[pixel + 2] = (color >> 16) & 0xFF;
+			data->addr[pixel + 3] = (color >> 24);
+		}
+		i++;
 	}
 }
 
-float min_ray(float _h, float _v)
+t_ray	*new_ray(int id, float x, float y, float distance)
 {
-	if (_h > _v)
-		return (_v);
-	return (_h);
+	t_ray	*node;
+
+	node = (t_ray *)malloc(sizeof(t_ray));
+	if (!node)
+		exit (1);
+	node->id = id;
+	node->x = x;
+	node->y = y;
+	node->distance = distance;
+	node->next = NULL;
+	return (node);
 }
 
-int	wall_check(t_data *data)
+void	add_ray(t_ray **list, t_ray *ray)
 {
-	float	x;
-	float	y;
-	x = data->player.x * SIZE_ + SIZE_PLYR/2;
-	y = data->player.y * SIZE_ + SIZE_PLYR/2;
-	x += cos(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection;
-	y += -sin(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection;
-	x = (int)(x / SIZE_) * SIZE_;
-	y = (int)(y / SIZE_) * SIZE_;
-	printf("P[%f, %f]\n",data->player.x, data->player.y);
-	printf("[%d, %d]\n",(int)x / SIZE_, (int)y/ SIZE_);
-	printf("[%f, %f]\n",x, y);
-	printf("[%c]\n\n",data->map[(int)x / SIZE_][(int)y / SIZE_]);
-	if (data->map[(int)y / SIZE_][(int)x / SIZE_] == '1')
-		return (1);
-	return (0);
+	t_ray *last;
+
+	if (list && ray)
+	{
+		if (!(*list))
+			*list = ray;
+		else
+		{
+			last = *list;
+			while (last->next)
+				last = last->next;
+			last->next = ray;
+		}
+	}
 }
 
-void	update_player(t_data *data)
+void	clear_rays(t_ray **list)
 {
+	t_ray *node;
+
+	if (list)
+	{
+		node = *list;
+		while (*list)
+		{
+			node = *list;
+			*list = (*list)->next;
+			free(node);
+		}
+		free(list);
+	}
+}
+
+t_ray	*update_ray(t_data *data)
+{
+	float	angle;
+	t_ray	*ray;
+	int		i=0;
+
+	ray = NULL;
+	angle = data->player.rotatedirection - M_PI / 6;
+	while (angle < data->player.rotatedirection + M_PI / 6)
+	{
+		data->player.h_x = data->player.x * SIZE_ + SIZE_PLYR / 2;
+		data->player.h_y = data->player.y * SIZE_ + SIZE_PLYR / 2;
+		data->player.v_x = data->player.x * SIZE_ + SIZE_PLYR / 2;
+		data->player.v_y = data->player.y * SIZE_ + SIZE_PLYR / 2;
+		horizontal_initial_points(data, angle);
+		vertical_initial_points(data, angle);
+		horizontal_points(data, angle);
+		vertical_points(data, angle);
+		if (data->player.v_distance < data->player.h_distance)
+		{
+			add_ray(&ray, new_ray(i,data->player.v_x, data->player.v_y, data->player.v_distance));
+			// draw_xray(data, data->player.v_x, data->player.v_y);
+		}
+		else
+		{
+			add_ray(&ray, new_ray(i,data->player.h_x, data->player.h_y, data->player.h_distance));
+			// draw_xray(data, data->player.h_x, data->player.h_y);
+		}
+		angle += (M_PI / 3) / WIDTH;
+		i++;
+	}
+	return (ray);
+}
+
+int draw(t_data *data)
+{
+	t_ray	*ray;
+
+	// ray = NULL;
+	background(data);
+	player(data);
 	if (data->player.sidedirection)
 	{
 		data->player.x += cos(data->player.rotatedirection + M_PI_2) * data->player.walkspeed * data->player.sidedirection;
@@ -120,40 +184,20 @@ void	update_player(t_data *data)
 	}
 	if (data->player.turndirection)
 		data->player.rotatedirection += data->player.turndirection * data->player.rotatespeed;
-	float angle = data->player.rotatedirection;
-	if (data->player.turndirection || data->player.walkdirection || data->player.sidedirection)
+	// if (data->player.turndirection || data->player.walkdirection || data->player.sidedirection)
 	{
-		data->player.ray.h_x = data->player.x * SIZE_ + SIZE_PLYR/2;
-		data->player.ray.h_y = data->player.y * SIZE_ + SIZE_PLYR/2;
-		data->player.ray.v_x = data->player.x * SIZE_ + SIZE_PLYR/2;
-		data->player.ray.v_y = data->player.y * SIZE_ + SIZE_PLYR/2;
-		mlx_clear_window(data->mlx, data->wind);
-		re_background(data);
-		
-		
-
-		
-		horizontal_points(data, angle);
-		vertical_points(data, angle);
-		if (data->player.ray.v_distance < data->player.ray.h_distance)
-		{
-			printf("Direct = (%f, %f)\n",data->player.ray.v_x, data->player.ray.v_y);
-			draw_ray(data, data->player.ray.v_x,data->player.ray.v_y, "images/red.xpm",data->ray_v);
-		}
-		else
-		{
-			printf("Direct = (%f, %f)\n",data->player.ray.h_x, data->player.ray.h_y);
-			draw_ray(data, data->player.ray.h_x,data->player.ray.h_y, "images/blue.xpm",data->ray_h);
-		}
-		data->player_img = mlx_xpm_file_to_image(data->mlx, "images/player_3.xpm", &data->x, &data->y);
-		mlx_put_image_to_window(data->mlx, data->wind, data->player_img, data->player.x * SIZE_, data->player.y * SIZE_);
-		mlx_destroy_image(data->mlx, data->player_img);
+		ray = update_ray(data);
 	}
-}
-
-int draw(t_data *data)
-{
-	update_player(data);
+	while (ray)
+	{
+		printf("id = %d\n",ray->id);
+		printf("x = %f\n",ray->x);
+		printf("y = %f\n",ray->y);
+		printf("d = %f\n\n",ray->distance);
+		draw_xray(data, ray->x, ray->y);
+		ray = ray->next;
+	}
+	mlx_put_image_to_window(data->mlx, data->wind, data->img, 0, 0);
 	return (0);
 }
 
@@ -161,11 +205,21 @@ int main(void)
 {
 	t_data data;
 	initial(&data);
-	background(&data);
-	data.info.walls = malloc(sizeof(t_point) * data.info.blocks);
-	save_walls_position(&data);
+	get_info(&data);
 	mlx_loop_hook(data.mlx, draw, &data);
 	mlx_hook(data.wind, 3, 0, keyprelease, &data);
 	mlx_hook(data.wind, 2, 0, keypress, &data);
 	mlx_loop(data.mlx);
 }
+
+
+
+
+	// for(int y = 0;y < data.row;y++)
+	// {
+	// 	for(int x = 0;x < data.col;x++)
+	// 	{
+	// 		printf("[%c]",data.map[y][x]);
+	// 	}
+	// 	printf("\n");
+	// }

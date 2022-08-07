@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/04 19:09:27 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/07 14:28:52 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,22 @@ void	read_map(t_data *data)
 	int len = 0;
 	int fd = open("map.cub", O_RDONLY);
 	char *line = get_next_line(fd);
+	data->col = ft_strlen(line) - 1;
 	while (line)
 	{
-		data->col++;
-		len = ft_strlen(line);
-		if (len - 1 > data->row)
-			data->row = len - 1;
+		data->row++;
 		free(line);
 		line = get_next_line(fd);
 	}
 	close (fd);
+	data->map = malloc(sizeof(char*) * (data->row + 1));
+	data->map[data->row] = 0;
+	len = 0;
 	fd = open("map.cub", O_RDONLY);
 	line = get_next_line(fd);
-	data->map = malloc(sizeof(char*) * (data->col + 1));
-	data->map[data->col] = 0;
-	len = 0;
 	while (line)
 	{
-		if (len < data->col - 1)
+		if (len < data->row - 1)
 			data->map[len] = ft_substr(line, 0, ft_strlen(line) - 1);
 		else
 			data->map[len] = ft_strdup(line);
@@ -47,17 +45,12 @@ void	read_map(t_data *data)
 
 void	initial(t_data *data)
 {
-	data->info.blocks = 0;
 
 	data->player.turndirection= 0;
 	data->player.walkdirection= 0;
 	data->player.sidedirection= 0;
 	data->player.rotatespeed = .1;
-	data->player.walkspeed = .1;
-	data->player.ray.h_dx = 0;
-	data->player.ray.h_dy = 0;
-	data->player.ray.v_dx = 0;
-	data->player.ray.v_dy = 0;
+	data->player.walkspeed = .05;
 
 
 	data->row = 0;
@@ -65,13 +58,7 @@ void	initial(t_data *data)
 	read_map(data);
 	data->mlx = mlx_init();
 	data->wind = mlx_new_window(data->mlx, WIDTH, HEIGHT, "Cube3D");
-	data->img = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
-	data->player_img = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
-	data->player_img_reset = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
-	data->ray_h = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
-	data->ray_v = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
-	data->map_gb = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
-	data->map_wall = mlx_new_image(data->mlx, data->row * SIZE_, data->col * SIZE_);
+	data->img = mlx_new_image(data->mlx, data->col * SIZE_, data->row * SIZE_);
 	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length, &data->endian);
 }
 
@@ -88,32 +75,21 @@ int	is_player(char c)
 	return (c == 'N' || c == 'E' || c == 'S' || c == 'W');
 }
 
-void save_walls_position(t_data *data)
+int	point_in_range(t_data *data, int x, int y)
 {
-	int i = 0;
-	int j = 0;
-	int z = 0;
-
-	while (data->map[j])
-	{
-		i = 0;
-		while (data->map[j][i])
-		{
-			if (data->map[j][i] == '1')
-			{
-				data->info.walls[z].x = i * SIZE_;
-				data->info.walls[z].y = j * SIZE_;
-				z++;
-			}
-			i++;
-		}
-		j++;
-	}
+	if (x < data->col && x >= 0 && y < data->row && y >= 0)
+		return (1);
+	return (0);
 }
 
-int	point_in_range(t_data *data, float x, float y)
+int check_wall_points(t_data *data, int x, int y)
 {
-	if (x < data->row * SIZE_ && x > 0 && y < data->col * SIZE_ && y > 0)
+	// printf("[%d, %d] ",y, x);
+	if (data->map[y][x] == '1')
+	{
+		// printf("[]\n");
 		return (1);
+	}
+	// printf("[]\n");
 	return (0);
 }
