@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 10:10:30 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/08 10:59:41 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/08 17:00:20 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	draw_background(t_data *data)
 {
-	int pixel;
+	// int pixel;
 	int v_limit;
 	int h_limit;
 	int i;
@@ -36,11 +36,12 @@ void	draw_background(t_data *data)
 				color = 0x444444;
 			else
 				color = 0xffffff;
-			pixel = (v * data->line_length) + (h * 4);
-			data->addr[pixel + 0] = (color) & 0xFF;
-			data->addr[pixel + 1] = (color >> 8) & 0xFF;
-			data->addr[pixel + 2] = (color >> 16) & 0xFF;
-			data->addr[pixel + 3] = (color >> 24);
+			data->addr[(v * data->line_length) + h] = color;
+			// pixel = (v * data->line_length) + (h * 4);
+			// data->addr[pixel + 0] = (color) & 0xFF;
+			// data->addr[pixel + 1] = (color >> 8) & 0xFF;
+			// data->addr[pixel + 2] = (color >> 16) & 0xFF;
+			// data->addr[pixel + 3] = (color >> 24);
 			h++;
 			if (h >= h_limit)
 			{
@@ -66,7 +67,7 @@ void	draw_xray(t_data *data, float Bx, float By)
 	float step;
 	float i = 0;
 	int pixel;
-	int color = 0xff4d4d;
+	int color = 0xff9933;
 	if (dx >= dy)
 		step = fabs(dx);
 	else
@@ -78,10 +79,13 @@ void	draw_xray(t_data *data, float Bx, float By)
 		pixel = ((int)Ay * data->line_length) + ((int)Ax * 4);
 		if (pixel > 0)
 		{
-			data->addr[pixel + 0] = (color) & 0xFF;
-			data->addr[pixel + 1] = (color >> 8) & 0xFF;
-			data->addr[pixel + 2] = (color >> 16) & 0xFF;
-			data->addr[pixel + 3] = (color >> 24);
+
+			data->addr[(int)Ay * data->line_length + (int)Ax] = color;
+
+			// data->addr[pixel + 0] = (color) & 0xFF;
+			// data->addr[pixel + 1] = (color >> 8) & 0xFF;
+			// data->addr[pixel + 2] = (color >> 16) & 0xFF;
+			// data->addr[pixel + 3] = (color >> 24);
 		}
 		i++;
 	}
@@ -89,8 +93,8 @@ void	draw_xray(t_data *data, float Bx, float By)
 
 void	draw_player(t_data *data, t_ray *ray)
 {
-	int pixel;
-	int color = 0xff0000;
+	// int pixel;
+	int color = 0xff9933;
 	int i = data->player.x * SIZE_;
 	int j = data->player.y * SIZE_;
 
@@ -99,20 +103,20 @@ void	draw_player(t_data *data, t_ray *ray)
 		i = data->player.x * SIZE_;
 		while (i < data->player.x * SIZE_ + SIZE_PLYR)
 		{
-			pixel = (j * data->line_length) + (i * 4);
-			data->addr[pixel + 0] = (color) & 0xFF;
-			data->addr[pixel + 1] = (color >> 8) & 0xFF;
-			data->addr[pixel + 2] = (color >> 16) & 0xFF;
-			data->addr[pixel + 3] = (color >> 24);
+			data->addr[(j * data->line_length) + i] = color;
+			// pixel = (j * data->line_length) + (i * 4);
+			// data->addr[pixel + 0] = (color) & 0xFF;
+			// data->addr[pixel + 1] = (color >> 8) & 0xFF;
+			// data->addr[pixel + 2] = (color >> 16) & 0xFF;
+			// data->addr[pixel + 3] = (color >> 24);
 			i++;
 		}
 		j++;
 	}
-	while (ray)
-	{
-		draw_xray(data, ray->x, ray->y);
+	draw_xray(data, ray->x, ray->y);
+	while (ray->next)
 		ray = ray->next;
-	}
+	draw_xray(data, ray->x, ray->y);
 }
 
 void	get_info(t_data *data)
@@ -125,8 +129,6 @@ void	get_info(t_data *data)
 		i = 0;
 		while (data->map[j][i] && data->map[j][i] != '\n')
 		{
-			// if (data->map[j][i] == '1')
-			// 		printf("[%d, %d]\n",i,j);
 			if (is_player(data->map[j][i]))
 			{
 				data->player.x = i;

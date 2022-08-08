@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/08 10:43:41 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/08 17:51:50 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,36 +138,59 @@ t_ray	*update_ray(t_data *data)
 	return (ray);
 }
 
+// mlx_get_data_addr
+
 void draw_wall(t_data *data, t_ray *ray)
 {
-	int pixel;
+	// int pixel;
 	int color;
 	int x = WIDTH;
 	int y = 0;
+ 	int alpha = 0;
+					// color = 0xfcbf82;
 	while (x > 0)
 	{
 		y = 0;
 		while (y < HEIGHT)
 		{
+			// pixel = (y * data->line_length) + (x * 4);
 			if (y <= (HEIGHT / 2) - (ray->wallheigth / 2))
-				color = 0xffffff;
+				color = data->texture.C;
 			else if (y >= (HEIGHT / 2) + (ray->wallheigth / 2))
-				color = 0x000000;
+				color = data->texture.F;
 			else
 			{
 				if (ray->status == 'H')
-					color = 0xFEDCBA;
+				{
+				color = 0xffa366;
+				}
 				if (ray->status == 'V')
+				{
 					color = 0xfcbf82;
+				}
+				alpha = (int)ray->distance;
+				if (alpha > 255)
+					alpha = 255;
+				
 			}
-			pixel = (y * data->line_length) + (x * 4);
-			if (pixel > 0)
-			{
-				data->addr[pixel + 0] = (color) & 0xFF;
-				data->addr[pixel + 1] = (color >> 8) & 0xFF;
-				data->addr[pixel + 2] = (color >> 16) & 0xFF;
-				data->addr[pixel + 3] = (color >> 24);
-			}
+			// {
+			// }
+			// if (pixel > 0)
+			// {
+			// 	// int i = (int)ray->distance;
+			// 	// i = (i / 255) * 100;
+				
+			// 	data->addr[pixel + 0] = (color) & 0xFF;
+			// 	data->addr[pixel + 1] = (color >> 8) & 0xFF;
+			// 	data->addr[pixel + 2] = (color >> 16) & 0xFF;
+			// 	data->addr[pixel + 3] = (color >> 24) & 0xff;
+				
+			// 	// printf("{%i}{%x}\n",i, i);
+			// 	// data->addr[pixel + 3] = (color >> 24);
+			// }
+
+			data->addr[(y * data->line_length) + x] = color + (alpha << 24);
+			alpha = 0;
 			y++;
 		}
 		ray = ray->next;
@@ -226,6 +249,8 @@ int draw(t_data *data)
 int main(void)
 {
 	t_data data;
+					// 	printf("d = %u\n",0xfcbf82);
+					// printf("d = %u\n",0xfffcbf82);exit(0);
 	initial(&data);
 	get_info(&data);
 	mlx_loop_hook(data.mlx, draw, &data);
@@ -234,14 +259,5 @@ int main(void)
 	mlx_loop(data.mlx);
 }
 
-
-
-
-	// for(int y = 0;y < data.row;y++)
-	// {
-	// 	for(int x = 0;x < data.col;x++)
-	// 	{
-	// 		printf("[%c]",data.map[y][x]);
-	// 	}
-	// 	printf("\n");
-	// }
+//         111111001011111110000010
+// 10101010111111001011111110000010

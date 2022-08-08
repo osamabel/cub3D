@@ -6,7 +6,7 @@
 #    By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/25 09:40:30 by obelkhad          #+#    #+#              #
-#    Updated: 2022/08/07 21:42:37 by obelkhad         ###   ########.fr        #
+#    Updated: 2022/08/08 17:25:20 by obelkhad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
+	# make -C libft
 	cc $(CFLAGS) -I.  -o $(NAME) $(OBJ) -L /usr/local/lib -lmlx -framework OpenGL -framework AppKit
 %.o:%.c cube.h
 	cc $(CFLAGS) -I.  -Imlx -c $< -o $@

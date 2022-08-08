@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/08 10:58:40 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/08 17:53:12 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 #define  SIZE_ 15
 #define  SIZE_PLYR 3
 #define  WALL_DIFF 0.0005
-#define  WIDTH 1000
-#define  HEIGHT 700
+#define  WIDTH 2500
+#define  HEIGHT 900
 #define  ANGLE_VIEW M_PI / 3
 
 
@@ -56,13 +56,22 @@ typedef struct	s_player {
 	float	v_distance;
 }	t_player;
 
+typedef struct s_texture
+{
+	char *NO;
+	char *SO;
+	char *WE;
+	char *EA;
+	int F;
+	int C;
+}	t_texture;
 typedef struct	s_data {
 	void	*mlx;
 	void	*wind;
 	void	*img;
 	void	*ray_h;
 	void	*ray_v;
-	char	*addr;
+	int		*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		line_length_view;
@@ -73,6 +82,7 @@ typedef struct	s_data {
 	int 	x;
 	int 	y;
 	t_player player;
+	t_texture texture;
 }	t_data;
 
 void	read_map(t_data *data);
@@ -87,9 +97,8 @@ void	horizontal_initial_points(t_data *data, float angle);
 void	vertical_initial_points(t_data *data, float angle);
 void	horizontal_points(t_data *data, float angle);
 void	vertical_points(t_data *data, float angle);
-int	point_in_range(t_data *data, int x, int y);
-int is_wall(t_data *data, int x, int y);
-
+int		point_in_range(t_data *data, int x, int y);
+int 	is_wall(t_data *data, int x, int y);
 void	draw_player(t_data *data, t_ray *ray);
 void	get_info(t_data *data);
 #endif
