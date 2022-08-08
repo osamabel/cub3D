@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 10:10:30 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/08 07:41:41 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/08 10:59:41 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,8 @@ void	get_info(t_data *data)
 		i = 0;
 		while (data->map[j][i] && data->map[j][i] != '\n')
 		{
+			// if (data->map[j][i] == '1')
+			// 		printf("[%d, %d]\n",i,j);
 			if (is_player(data->map[j][i]))
 			{
 				data->player.x = i;

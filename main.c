@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/08 08:09:40 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/08 10:43:41 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_ray	*new_ray(int id, float x, float y, float distance, char status)
 	projection_distance = (WIDTH / 2) / tan(ANGLE_VIEW / 2);
 	node = (t_ray *)malloc(sizeof(t_ray));
 	if (!node)
-		exit (1);
+		return (0);
 	node->id = id;
 	node->status = status;
 	node->x = x;
@@ -74,7 +74,7 @@ void	add_ray(t_ray **list, t_ray *ray)
 {
 	t_ray *last;
 
-	if (list && ray)
+	if (ray)
 	{
 		if (!(*list))
 			*list = ray;
@@ -85,6 +85,11 @@ void	add_ray(t_ray **list, t_ray *ray)
 				last = last->next;
 			last->next = ray;
 		}
+	}
+	else
+	{
+		//free
+		exit(10);
 	}
 }
 
@@ -151,9 +156,9 @@ void draw_wall(t_data *data, t_ray *ray)
 			else
 			{
 				if (ray->status == 'H')
-					color = 0xd9d9d9;
+					color = 0xFEDCBA;
 				if (ray->status == 'V')
-					color = 0xbfbfbf;
+					color = 0xfcbf82;
 			}
 			pixel = (y * data->line_length) + (x * 4);
 			if (pixel > 0)
@@ -170,15 +175,39 @@ void draw_wall(t_data *data, t_ray *ray)
 	}
 }
 
+int	check_wall(t_data *data, char status)
+{
+	float	x = 0;
+	float	y = 0;
+	float	size_player = SIZE_PLYR;
+	float	size = SIZE_;
+
+	if (status == 'S')
+	{
+		x = data->player.x + cos(data->player.rotatedirection + M_PI_2) * data->player.walkspeed * data->player.sidedirection + WALL_DIFF;
+		y = data->player.y + -sin(data->player.rotatedirection + M_PI_2) * data->player.walkspeed * data->player.sidedirection + WALL_DIFF;
+	}
+	if (status == 'W')
+	{
+		x = data->player.x + cos(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection + WALL_DIFF;
+		y = data->player.y + -sin(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection + WALL_DIFF;
+	}
+	if (x - data->player.x > 0)
+		x += size_player / size + WALL_DIFF;
+	if (y - data->player.y > 0)
+		y += size_player / size + WALL_DIFF;
+	return (is_wall(data, (int)x, (int)y));
+}
+
 int draw(t_data *data)
 {
 	t_ray	*ray;
-	if (data->player.sidedirection)
+	if (data->player.sidedirection && !check_wall(data, 'S'))
 	{
 		data->player.x += cos(data->player.rotatedirection + M_PI_2) * data->player.walkspeed * data->player.sidedirection;
 		data->player.y += -sin(data->player.rotatedirection + M_PI_2) * data->player.walkspeed * data->player.sidedirection;
 	}
-	if (data->player.walkdirection)
+	if (data->player.walkdirection && !check_wall(data, 'W'))
 	{
 		data->player.x += cos(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection;
 		data->player.y += -sin(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection;

@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 09:01:56 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/07 14:28:07 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/08 09:23:57 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	vertical_points(t_data *data, float angle)
 	}
 	while (point_in_range(data, (int)((data->player.v_x - i) / SIZE_), (int)(data->player.v_y / SIZE_)))
 	{
-		if (check_wall_points(data, (int)((data->player.v_x - i) / SIZE_),(int)(data->player.v_y / SIZE_)))
+		if (is_wall(data, (int)((data->player.v_x - i) / SIZE_),(int)(data->player.v_y / SIZE_)))
 			break ;
 		data->player.v_distance += hypot(v_dx, v_dy);
 		data->player.v_x += v_dx;

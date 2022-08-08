@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/08 07:42:05 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/08 10:58:40 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 #define CUBE_H
 #define  SIZE_ 15
 #define  SIZE_PLYR 3
+#define  WALL_DIFF 0.0005
 #define  WIDTH 1000
 #define  HEIGHT 700
-#define  ANGLE_VIEW M_PI/3
+#define  ANGLE_VIEW M_PI / 3
 
 
 #include <mlx.h>
@@ -87,7 +88,7 @@ void	vertical_initial_points(t_data *data, float angle);
 void	horizontal_points(t_data *data, float angle);
 void	vertical_points(t_data *data, float angle);
 int	point_in_range(t_data *data, int x, int y);
-int check_wall_points(t_data *data, int x, int y);
+int is_wall(t_data *data, int x, int y);
 
 void	draw_player(t_data *data, t_ray *ray);
 void	get_info(t_data *data);
