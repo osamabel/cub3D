@@ -6,16 +6,17 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/07 15:38:48 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/08 07:42:05 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE_H
 #define CUBE_H
-#define  SIZE_ 40
-#define  SIZE_PLYR 5
+#define  SIZE_ 15
+#define  SIZE_PLYR 3
 #define  WIDTH 1000
 #define  HEIGHT 700
+#define  ANGLE_VIEW M_PI/3
 
 
 #include <mlx.h>
@@ -28,10 +29,12 @@
 #include "libft/libft.h"
 
 typedef struct	s_ray {
-	int	id;
+	int		id;
 	float	x;
 	float	y;
 	float	distance;
+	char	status;
+	float	wallheigth;
 	struct s_ray	*next;
 }	t_ray;
 
@@ -61,6 +64,7 @@ typedef struct	s_data {
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
+	int		line_length_view;
 	int		endian;
 	int		row;
 	int		col;
@@ -76,7 +80,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int		is_player(char c);
 int		draw(t_data *data);
 t_ray	*update_ray(t_data *data);
-void	background(t_data *data);
+void	draw_background(t_data *data);
 void	save_walls_position(t_data *data);
 void	horizontal_initial_points(t_data *data, float angle);
 void	vertical_initial_points(t_data *data, float angle);
@@ -85,6 +89,6 @@ void	vertical_points(t_data *data, float angle);
 int	point_in_range(t_data *data, int x, int y);
 int check_wall_points(t_data *data, int x, int y);
 
-void	player(t_data *data);
+void	draw_player(t_data *data, t_ray *ray);
 void	get_info(t_data *data);
 #endif

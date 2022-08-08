@@ -6,7 +6,7 @@
 #    By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/25 09:40:30 by obelkhad          #+#    #+#              #
-#    Updated: 2022/08/07 14:52:19 by obelkhad         ###   ########.fr        #
+#    Updated: 2022/08/07 21:42:37 by obelkhad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,10 +25,10 @@ OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJ) cube.h
-	cc $(CFLAGS) -I. -o $(NAME) $(OBJ) -L /usr/local/lib -lmlx -framework OpenGL -framework AppKit
-.c.o: cube.h
-	cc $(CFLAGS) -I. -Imlx -c $< -o $@
+$(NAME): $(OBJ)
+	cc $(CFLAGS) -I.  -o $(NAME) $(OBJ) -L /usr/local/lib -lmlx -framework OpenGL -framework AppKit
+%.o:%.c cube.h
+	cc $(CFLAGS) -I.  -Imlx -c $< -o $@
 clean:
 	rm -f $(NAME) $(OBJ)
 fclean: clean

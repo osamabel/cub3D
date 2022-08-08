@@ -6,13 +6,13 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 10:10:30 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/07 14:50:49 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/08 07:41:41 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
 
-void	background(t_data *data)
+void	draw_background(t_data *data)
 {
 	int pixel;
 	int v_limit;
@@ -57,7 +57,37 @@ void	background(t_data *data)
 	}
 }
 
-void	player(t_data *data)
+void	draw_xray(t_data *data, float Bx, float By)
+{
+	float Ax = data->player.x * SIZE_ + SIZE_PLYR / 2;
+	float Ay = data->player.y * SIZE_ + SIZE_PLYR / 2;
+	float dx = Bx - Ax;
+	float dy = By - Ay;
+	float step;
+	float i = 0;
+	int pixel;
+	int color = 0xff4d4d;
+	if (dx >= dy)
+		step = fabs(dx);
+	else
+		step = fabs(dy);
+	while (i < step)
+	{
+		Ax += dx / step;
+		Ay += dy / step;
+		pixel = ((int)Ay * data->line_length) + ((int)Ax * 4);
+		if (pixel > 0)
+		{
+			data->addr[pixel + 0] = (color) & 0xFF;
+			data->addr[pixel + 1] = (color >> 8) & 0xFF;
+			data->addr[pixel + 2] = (color >> 16) & 0xFF;
+			data->addr[pixel + 3] = (color >> 24);
+		}
+		i++;
+	}
+}
+
+void	draw_player(t_data *data, t_ray *ray)
 {
 	int pixel;
 	int color = 0xff0000;
@@ -77,6 +107,11 @@ void	player(t_data *data)
 			i++;
 		}
 		j++;
+	}
+	while (ray)
+	{
+		draw_xray(data, ray->x, ray->y);
+		ray = ray->next;
 	}
 }
 

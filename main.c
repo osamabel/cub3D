@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/07 15:56:29 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/08 08:09:40 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,47 +51,21 @@ int keypress(int keycode, void *parm)
 	return 0;
 }
 
-void	draw_xray(t_data *data, float Bx, float By)
-{
-	float Ax = data->player.x * SIZE_ + SIZE_PLYR / 2;
-	float Ay = data->player.y * SIZE_ + SIZE_PLYR / 2;
-	float dx = Bx - Ax;
-	float dy = By - Ay;
-	float step;
-	float i = 0;
-	int pixel;
-	int color = 0xff4d4d;
-	if (dx >= dy)
-		step = fabs(dx);
-	else
-		step = fabs(dy);
-	while (i < step)
-	{
-		Ax += dx / step;
-		Ay += dy / step;
-		pixel = ((int)Ay * data->line_length) + ((int)Ax * 4);
-		if (pixel > 0)
-		{
-			data->addr[pixel + 0] = (color) & 0xFF;
-			data->addr[pixel + 1] = (color >> 8) & 0xFF;
-			data->addr[pixel + 2] = (color >> 16) & 0xFF;
-			data->addr[pixel + 3] = (color >> 24);
-		}
-		i++;
-	}
-}
-
-t_ray	*new_ray(int id, float x, float y, float distance)
+t_ray	*new_ray(int id, float x, float y, float distance, char status)
 {
 	t_ray	*node;
+	float	projection_distance;
 
+	projection_distance = (WIDTH / 2) / tan(ANGLE_VIEW / 2);
 	node = (t_ray *)malloc(sizeof(t_ray));
 	if (!node)
 		exit (1);
 	node->id = id;
+	node->status = status;
 	node->x = x;
 	node->y = y;
 	node->distance = distance;
+	node->wallheigth = projection_distance * (SIZE_ / distance );
 	node->next = NULL;
 	return (node);
 }
@@ -138,8 +112,8 @@ t_ray	*update_ray(t_data *data)
 	int		i=0;
 
 	ray = NULL;
-	angle = data->player.rotatedirection - M_PI / 6;
-	while (angle < data->player.rotatedirection + M_PI / 6)
+	angle = data->player.rotatedirection - ANGLE_VIEW / 2;
+	while (angle < data->player.rotatedirection + ANGLE_VIEW / 2)
 	{
 		data->player.h_x = data->player.x * SIZE_ + SIZE_PLYR / 2;
 		data->player.h_y = data->player.y * SIZE_ + SIZE_PLYR / 2;
@@ -150,28 +124,55 @@ t_ray	*update_ray(t_data *data)
 		horizontal_points(data, angle);
 		vertical_points(data, angle);
 		if (data->player.v_distance < data->player.h_distance)
-		{
-			add_ray(&ray, new_ray(i,data->player.v_x, data->player.v_y, data->player.v_distance));
-			// draw_xray(data, data->player.v_x, data->player.v_y);
-		}
+			add_ray(&ray, new_ray(i,data->player.v_x, data->player.v_y, data->player.v_distance * cos(data->player.rotatedirection - angle),'V'));
 		else
-		{
-			add_ray(&ray, new_ray(i,data->player.h_x, data->player.h_y, data->player.h_distance));
-			// draw_xray(data, data->player.h_x, data->player.h_y);
-		}
-		angle += (M_PI / 3) / WIDTH;
+			add_ray(&ray, new_ray(i,data->player.h_x, data->player.h_y, data->player.h_distance * cos(data->player.rotatedirection - angle), 'H'));
+		angle += ANGLE_VIEW / WIDTH;
 		i++;
 	}
 	return (ray);
 }
 
+void draw_wall(t_data *data, t_ray *ray)
+{
+	int pixel;
+	int color;
+	int x = WIDTH;
+	int y = 0;
+	while (x > 0)
+	{
+		y = 0;
+		while (y < HEIGHT)
+		{
+			if (y <= (HEIGHT / 2) - (ray->wallheigth / 2))
+				color = 0xffffff;
+			else if (y >= (HEIGHT / 2) + (ray->wallheigth / 2))
+				color = 0x000000;
+			else
+			{
+				if (ray->status == 'H')
+					color = 0xd9d9d9;
+				if (ray->status == 'V')
+					color = 0xbfbfbf;
+			}
+			pixel = (y * data->line_length) + (x * 4);
+			if (pixel > 0)
+			{
+				data->addr[pixel + 0] = (color) & 0xFF;
+				data->addr[pixel + 1] = (color >> 8) & 0xFF;
+				data->addr[pixel + 2] = (color >> 16) & 0xFF;
+				data->addr[pixel + 3] = (color >> 24);
+			}
+			y++;
+		}
+		ray = ray->next;
+		x--;
+	}
+}
+
 int draw(t_data *data)
 {
 	t_ray	*ray;
-
-	// ray = NULL;
-	background(data);
-	player(data);
 	if (data->player.sidedirection)
 	{
 		data->player.x += cos(data->player.rotatedirection + M_PI_2) * data->player.walkspeed * data->player.sidedirection;
@@ -184,19 +185,11 @@ int draw(t_data *data)
 	}
 	if (data->player.turndirection)
 		data->player.rotatedirection += data->player.turndirection * data->player.rotatespeed;
-	// if (data->player.turndirection || data->player.walkdirection || data->player.sidedirection)
-	{
-		ray = update_ray(data);
-	}
-	while (ray)
-	{
-		printf("id = %d\n",ray->id);
-		printf("x = %f\n",ray->x);
-		printf("y = %f\n",ray->y);
-		printf("d = %f\n\n",ray->distance);
-		draw_xray(data, ray->x, ray->y);
-		ray = ray->next;
-	}
+	mlx_clear_window(data->mlx, data->wind);
+	ray = update_ray(data);
+	draw_wall(data, ray);
+	draw_background(data);
+	draw_player(data, ray);
 	mlx_put_image_to_window(data->mlx, data->wind, data->img, 0, 0);
 	return (0);
 }

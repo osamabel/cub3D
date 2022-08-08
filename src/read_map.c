@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/07 14:28:52 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/08 07:51:13 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	initial(t_data *data)
 	data->player.turndirection= 0;
 	data->player.walkdirection= 0;
 	data->player.sidedirection= 0;
-	data->player.rotatespeed = .1;
+	data->player.rotatespeed = .05;
 	data->player.walkspeed = .05;
 
 
@@ -58,7 +58,7 @@ void	initial(t_data *data)
 	read_map(data);
 	data->mlx = mlx_init();
 	data->wind = mlx_new_window(data->mlx, WIDTH, HEIGHT, "Cube3D");
-	data->img = mlx_new_image(data->mlx, data->col * SIZE_, data->row * SIZE_);
+	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length, &data->endian);
 }
 
