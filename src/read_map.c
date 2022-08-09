@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/08 16:56:04 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/09 08:54:51 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	initial(t_data *data)
 	data->player.turndirection= 0;
 	data->player.walkdirection= 0;
 	data->player.sidedirection= 0;
-	data->player.rotatespeed = .04;
-	data->player.walkspeed = .05;
+	data->player.rotatespeed = ROTATE_SPEED;
+	data->player.walkspeed = WALK_SPEED;
 
 
 	data->row = 0;
@@ -60,33 +60,38 @@ void	initial(t_data *data)
 	data->mlx = mlx_init();
 	data->wind = mlx_new_window(data->mlx, WIDTH, HEIGHT, "Cube3D");
 	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
-	data->addr = (int *)mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length, &data->endian);
-	data->line_length /= 4;
+	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length, &data->endian);
 }
 
-// void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-// {
-// 	char	*dst;
-
-// 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-// 	*(unsigned int*)dst = color;
-// }
-
-int	is_player(char c)
+void	get_info(t_data *data)
 {
-	return (c == 'N' || c == 'E' || c == 'S' || c == 'W');
-}
+	int i = 0;
+	int j = 0;
 
-int	point_in_range(t_data *data, int x, int y)
-{
-	if (x < data->col && x >= 0 && y < data->row && y >= 0)
-		return (1);
-	return (0);
-}
-
-int is_wall(t_data *data, int x, int y)
-{
-	if (data->map[y][x] == '1')
-		return (1);
-	return (0);
+	while (data->map[j])
+	{
+		i = 0;
+		while (data->map[j][i] && data->map[j][i] != '\n')
+		{
+			if (is_player(data->map[j][i]))
+			{
+				data->player.x = i;
+				data->player.y = j;
+				data->player.h_x = data->player.x * SIZE_ + SIZE_PLYR/2;
+				data->player.h_y = data->player.y * SIZE_ + SIZE_PLYR/2;
+				data->player.v_x = data->player.x * SIZE_ + SIZE_PLYR/2;
+				data->player.v_y = data->player.y * SIZE_ + SIZE_PLYR/2;
+				if (data->map[j][i] == 'N')
+					data->player.rotatedirection = M_PI_2;
+				if (data->map[j][i] == 'E')
+					data->player.rotatedirection = 0;
+				if (data->map[j][i] == 'S')
+					data->player.rotatedirection = 3 * M_PI_2;
+				if (data->map[j][i] == 'W')
+					data->player.rotatedirection = M_PI;
+			}
+			i++;
+		}
+		j++;
+	}
 }

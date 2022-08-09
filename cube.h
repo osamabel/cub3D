@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/08 17:53:12 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/09 08:54:41 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,12 @@
 #define  SIZE_ 15
 #define  SIZE_PLYR 3
 #define  WALL_DIFF 0.0005
-#define  WIDTH 2500
+#define  WIDTH 1000
 #define  HEIGHT 900
-#define  ANGLE_VIEW M_PI / 3
+#define  ANGLE_VIEW M_PI /3
+#define  COL_PLAYER 0xff9933
+#define  WALK_SPEED 0.05
+#define  ROTATE_SPEED 0.03
 
 
 #include <mlx.h>
@@ -71,7 +74,7 @@ typedef struct	s_data {
 	void	*img;
 	void	*ray_h;
 	void	*ray_v;
-	int		*addr;
+	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		line_length_view;
@@ -85,20 +88,30 @@ typedef struct	s_data {
 	t_texture texture;
 }	t_data;
 
+void mini_map(t_data *data, t_ray *ray);
+//utils.c
+void	put_pixel(t_data *data, int color, int x, int y, int alpha);
+int 	is_wall(t_data *data, int x, int y);
+int		is_player(char c);
+int		point_in_range(t_data *data, int x, int y);
+int	check_wall(t_data *data, char status);
+//keycode.c
+int keyprelease(int keycode, void *parm);
+int keypress(int keycode, void *parm);
+//ray_list.c
+t_ray	*new_ray(int id, float x, float y, float distance, char status);
+void	add_ray(t_ray **list, t_ray *ray);
+void	clear_rays(t_ray **list);
+t_ray	*update_ray(t_data *data);
+//read_map.c
 void	read_map(t_data *data);
 void	initial(t_data *data);
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-int		is_player(char c);
-int		draw(t_data *data);
-t_ray	*update_ray(t_data *data);
-void	draw_background(t_data *data);
-void	save_walls_position(t_data *data);
+void	get_info(t_data *data);
+//rendring.c
+void draw_wall(t_data *data, t_ray *ray);
+
 void	horizontal_initial_points(t_data *data, float angle);
 void	vertical_initial_points(t_data *data, float angle);
 void	horizontal_points(t_data *data, float angle);
 void	vertical_points(t_data *data, float angle);
-int		point_in_range(t_data *data, int x, int y);
-int 	is_wall(t_data *data, int x, int y);
-void	draw_player(t_data *data, t_ray *ray);
-void	get_info(t_data *data);
 #endif
