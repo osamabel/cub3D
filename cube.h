@@ -6,21 +6,24 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/09 08:54:41 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/10 21:35:41 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE_H
 #define CUBE_H
 #define  SIZE_ 15
-#define  SIZE_PLYR 3
+#define  SIZE_PLYR 5
 #define  WALL_DIFF 0.0005
-#define  WIDTH 1000
-#define  HEIGHT 900
+#define  WIDTH 1500
+#define  HEIGHT 1000
+#define  MINI_MAP_WIDTH 12
+#define  MINI_MAP_HEIGHT 12
 #define  ANGLE_VIEW M_PI /3
 #define  COL_PLAYER 0xff9933
-#define  WALK_SPEED 0.05
-#define  ROTATE_SPEED 0.03
+#define  WALK_SPEED 0.19
+#define  ROTATE_SPEED 0.08
+#define  SHADING 50
 
 
 #include <mlx.h>
@@ -72,12 +75,14 @@ typedef struct	s_data {
 	void	*mlx;
 	void	*wind;
 	void	*img;
+	void	*img1;
 	void	*ray_h;
 	void	*ray_v;
 	char	*addr;
+	char 	*wall;
 	int		bits_per_pixel;
 	int		line_length;
-	int		line_length_view;
+	int		line_length_wall;
 	int		endian;
 	int		row;
 	int		col;
@@ -90,11 +95,12 @@ typedef struct	s_data {
 
 void mini_map(t_data *data, t_ray *ray);
 //utils.c
-void	put_pixel(t_data *data, int color, int x, int y, int alpha);
+void	put_pixel(t_data *data,char *buffer, int color, int x, int y, int alpha);
 int 	is_wall(t_data *data, int x, int y);
 int		is_player(char c);
 int		point_in_range(t_data *data, int x, int y);
 int	check_wall(t_data *data, char status);
+int	mini_map_range(int x, int y);
 //keycode.c
 int keyprelease(int keycode, void *parm);
 int keypress(int keycode, void *parm);
@@ -108,7 +114,7 @@ void	read_map(t_data *data);
 void	initial(t_data *data);
 void	get_info(t_data *data);
 //rendring.c
-void draw_wall(t_data *data, t_ray *ray);
+void rendring(t_data *data, t_ray *ray);
 
 void	horizontal_initial_points(t_data *data, float angle);
 void	vertical_initial_points(t_data *data, float angle);

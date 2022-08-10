@@ -6,30 +6,30 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 10:10:30 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/09 08:44:03 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/09 19:56:08 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
 
-void	put_pixel(t_data *data, int color, int x, int y, int alpha)
+void	put_pixel(t_data *data,char *buffer, int color, int x, int y, int alpha)
 {
 	int	pixel;
 
 	pixel = (y * data->line_length) + (x * data->bits_per_pixel/8);
 	if (data->endian == 1 && pixel > 0)
     {
-        data->addr[pixel + 0] = alpha;
-        data->addr[pixel + 1] = (color >> 16) & 0xFF;
-        data->addr[pixel + 2] = (color >> 8) & 0xFF;
-        data->addr[pixel + 3] = (color) & 0xFF;
+        buffer[pixel + 0] = alpha;
+        buffer[pixel + 1] = (color >> 16) & 0xFF;
+        buffer[pixel + 2] = (color >> 8) & 0xFF;
+        buffer[pixel + 3] = (color) & 0xFF;
     }
     else if (data->endian == 0 && pixel > 0)
     {
-		data->addr[pixel + 0] = (color) & 0xFF;
-		data->addr[pixel + 1] = (color >> 8) & 0xFF;
-		data->addr[pixel + 2] = (color >> 16) & 0xFF;
-		data->addr[pixel + 3] = alpha;
+		buffer[pixel + 0] = (color) & 0xFF;
+		buffer[pixel + 1] = (color >> 8) & 0xFF;
+		buffer[pixel + 2] = (color >> 16) & 0xFF;
+		buffer[pixel + 3] = alpha;
     }
 }
 
@@ -74,4 +74,9 @@ int	check_wall(t_data *data, char status)
 	if (y - data->player.y > 0)
 		y += size_player / size + WALL_DIFF;
 	return (is_wall(data, (int)x, (int)y));
+}
+
+int	mini_map_range(int x, int y)
+{
+	return(x > SIZE_ && x < SIZE_ * MINI_MAP_WIDTH && y > SIZE_ && y < SIZE_ * MINI_MAP_HEIGHT);
 }

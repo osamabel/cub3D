@@ -6,13 +6,14 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/09 08:53:02 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/10 20:05:39 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "cube.h"
 
-
+int g_t9r9iba = 1;
 int update(t_data *data)
 {
 	t_ray	*ray;
@@ -28,10 +29,25 @@ int update(t_data *data)
 	}
 	if (data->player.turndirection)
 		data->player.rotatedirection += data->player.turndirection * data->player.rotatespeed;
-	mlx_clear_window(data->mlx, data->wind);
+	// tbrbi9i if not clearing winf
+
+	// if ((int)data->player.y == 1)
+	// 	g_t9r9iba = 0;
+	// if ((int)data->player.y == 4)
+	// 	g_t9r9iba = 1;
+	// if (g_t9r9iba)
+	// 	data->player.rotatespeed = ROTATE_SPEED + 0.5;
+	// else
+	// {
+	// 	data->player.rotatespeed = ROTATE_SPEED;
+		mlx_clear_window(data->mlx, data->wind);
+	// }
 	ray = update_ray(data);
-	draw_wall(data, ray);
-	mini_map(data, ray);
+	// sleep(10);
+	rendring(data, ray);
+	// if (!g_t9r9iba)
+		 mini_map(data, ray);
+
 	mlx_put_image_to_window(data->mlx, data->wind, data->img, 0, 0);
 	return (0);
 }
