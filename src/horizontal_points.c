@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 08:58:34 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/08 09:24:06 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/12 14:53:53 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,4 @@ void	horizontal_points(t_data *data, float angle)
 		data->player.h_x += h_dx;
 		data->player.h_y += h_dy;
 	}
-
 }

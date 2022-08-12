@@ -6,13 +6,13 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:49:32 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/09 13:44:34 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/12 14:54:02 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
 
-t_ray	*new_ray(int id, float x, float y, float distance, char status)
+t_ray	*new_ray(t_ray holder)
 {
 	t_ray	*node;
 	float	projection_distance;
@@ -21,12 +21,12 @@ t_ray	*new_ray(int id, float x, float y, float distance, char status)
 	node = (t_ray *)malloc(sizeof(t_ray));
 	if (!node)
 		return (0);
-	node->id = id;
-	node->status = status;
-	node->x = x;
-	node->y = y;
-	node->distance = distance;
-	node->wallheigth = projection_distance * (SIZE_ / distance );
+	node->id = holder.id;
+	node->status = holder.status;
+	node->x = holder.x;
+	node->y = holder.y;
+	node->distance = holder.distance;
+	node->wallheigth = projection_distance * (SIZE_ / holder.distance );
 	node->next = NULL;
 	return (node);
 }
@@ -75,10 +75,12 @@ t_ray	*update_ray(t_data *data)
 {
 	float	angle;
 	t_ray	*ray;
+	t_ray	holder;
 	int		i=0;
 
 	ray = NULL;
 	angle = data->player.rotatedirection - ANGLE_VIEW / 2;
+
 	while (angle < data->player.rotatedirection + ANGLE_VIEW / 2)
 	{
 		data->player.h_x = data->player.x * SIZE_ + SIZE_PLYR / 2;
@@ -90,14 +92,25 @@ t_ray	*update_ray(t_data *data)
 		horizontal_points(data, angle);
 		vertical_points(data, angle);
 		if (data->player.v_distance < data->player.h_distance)
-			add_ray(&ray, new_ray(i,data->player.v_x, data->player.v_y, data->player.v_distance * cos(data->player.rotatedirection - angle),'V'));
+		{
+			holder.distance = data->player.v_distance * cos(data->player.rotatedirection - angle);
+			holder.status = 'V';
+			holder.id = i;
+			holder.x = data->player.v_x;
+			holder.y = data->player.v_y;
+			add_ray(&ray, new_ray(holder));
+		}
 		else
-			add_ray(&ray, new_ray(i,data->player.h_x, data->player.h_y, data->player.h_distance * cos(data->player.rotatedirection - angle), 'H'));
+		{
+			holder.distance = data->player.h_distance * cos(data->player.rotatedirection - angle);
+			holder.status = 'H';
+			holder.id = i;
+			holder.x = data->player.h_x;
+			holder.y = data->player.h_y;
+			add_ray(&ray, new_ray(holder));
+		}
 		angle += ANGLE_VIEW / (WIDTH);
-		// printf(">>x %f\n",ray->x);
-		// printf(">>y %f\n\n",ray->y);
 		i++;
 	}
-	// exit(0);
 	return (ray);
 }

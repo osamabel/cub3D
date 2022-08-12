@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 09:01:56 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/08 09:23:57 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/12 14:53:50 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	vertical_points(t_data *data, float angle)
 	float v_dx;
 	float v_dy;
 	float i = 0;
+
 	v_dx = SIZE_;
 	v_dy = SIZE_ * tan(angle);
 	if ((sin(angle) > 0 && v_dy > 0) || (sin(angle) < 0 && v_dy < 0))

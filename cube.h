@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/10 21:35:41 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/12 18:27:04 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #define  SIZE_PLYR 5
 #define  WALL_DIFF 0.0005
 #define  WIDTH 1500
-#define  HEIGHT 1000
+#define  HEIGHT 900
 #define  MINI_MAP_WIDTH 12
 #define  MINI_MAP_HEIGHT 12
 #define  ANGLE_VIEW M_PI /3
@@ -60,6 +60,7 @@ typedef struct	s_player {
 	float 	v_y;
 	float	h_distance;
 	float	v_distance;
+	float	mouse;
 }	t_player;
 
 typedef struct s_texture
@@ -75,20 +76,25 @@ typedef struct	s_data {
 	void	*mlx;
 	void	*wind;
 	void	*img;
-	void	*img1;
-	void	*ray_h;
-	void	*ray_v;
+	void	*wall_N;
+	void	*wall_S;
+	void	*wall_E;
+	void	*wall_W;
 	char	*addr;
-	char 	*wall;
+	char 	*wall_buff;
 	int		bits_per_pixel;
 	int		line_length;
 	int		line_length_wall;
+	int 	wall_w;
+	int 	wall_h;
 	int		endian;
 	int		row;
 	int		col;
 	char	**map;
-	int 	x;
-	int 	y;
+	float	ray_x;
+	float	ray_y;
+	float	ray_d;
+	char	status;
 	t_player player;
 	t_texture texture;
 }	t_data;
@@ -96,7 +102,7 @@ typedef struct	s_data {
 void mini_map(t_data *data, t_ray *ray);
 //utils.c
 void	put_pixel(t_data *data,char *buffer, int color, int x, int y, int alpha);
-int 	is_wall(t_data *data, int x, int y);
+char is_wall(t_data *data, int x, int y);
 int		is_player(char c);
 int		point_in_range(t_data *data, int x, int y);
 int	check_wall(t_data *data, char status);
@@ -104,8 +110,9 @@ int	mini_map_range(int x, int y);
 //keycode.c
 int keyprelease(int keycode, void *parm);
 int keypress(int keycode, void *parm);
+int mouse_hook(int x,int y,void *param);
 //ray_list.c
-t_ray	*new_ray(int id, float x, float y, float distance, char status);
+t_ray	*new_ray(t_ray holder);
 void	add_ray(t_ray **list, t_ray *ray);
 void	clear_rays(t_ray **list);
 t_ray	*update_ray(t_data *data);
@@ -120,4 +127,6 @@ void	horizontal_initial_points(t_data *data, float angle);
 void	vertical_initial_points(t_data *data, float angle);
 void	horizontal_points(t_data *data, float angle);
 void	vertical_points(t_data *data, float angle);
+
+void fire(t_data *data, char *c);
 #endif

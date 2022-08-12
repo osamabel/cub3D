@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 10:10:30 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/09 19:56:08 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/12 14:54:26 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	point_in_range(t_data *data, int x, int y)
 	return (0);
 }
 
-int is_wall(t_data *data, int x, int y)
+char is_wall(t_data *data, int x, int y)
 {
 	if (data->map[y][x] == '1')
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/10 22:01:33 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/12 16:55:44 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,19 @@ void	initial(t_data *data)
 	data->player.sidedirection= 0;
 	data->player.rotatespeed = ROTATE_SPEED;
 	data->player.walkspeed = WALK_SPEED;
-
-
 	data->row = 0;
 	data->col = 0;
+
 	read_map(data);
 	data->mlx = mlx_init();
 	data->wind = mlx_new_window(data->mlx, WIDTH, HEIGHT, "Cube3D");
 	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length, &data->endian);
-	data->img1 = mlx_xpm_file_to_image(data->mlx, "./images/wall2.xpm",&data->x, &data->y);
-	data->wall = mlx_get_data_addr(data->img1, &data->bits_per_pixel, &data->line_length_wall, &data->endian);
+
+	data->wall_N = mlx_xpm_file_to_image(data->mlx, "./images/n.xpm",&data->wall_w, &data->wall_h);
+	data->wall_S = mlx_xpm_file_to_image(data->mlx, "./images/s.xpm",&data->wall_w, &data->wall_h);
+	data->wall_E = mlx_xpm_file_to_image(data->mlx, "./images/e.xpm",&data->wall_w, &data->wall_h);
+	data->wall_W = mlx_xpm_file_to_image(data->mlx, "./images/w.xpm",&data->wall_w, &data->wall_h);
 }
 void	get_info(t_data *data)
 {
