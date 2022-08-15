@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/15 10:50:31 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/15 17:58:00 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,27 @@
 
 void	read_map(t_data *data)
 {
-	int len = 0;
-	int fd = open("map.cub", O_RDONLY);
+	int fd;
+	if ((fd = open(data->mapath, O_RDONLY)) == -1)
+	{
+		ft_putstr_fd("Error: ", 2);
+		perror(data->mapath);
+		exit(1);
+	}
 	char *line = get_next_line(fd);
-	data->col = ft_strlen(line) - 1;
+	data->col = 0;
 	while (line)
 	{
+		if (data->col < (int)ft_strlen(line))
+			data->col = ft_strlen(line);
 		data->row++;
 		free(line);
 		line = get_next_line(fd);
 	}
 	close (fd);
 	data->map = malloc(sizeof(char*) * (data->row + 1));
-	data->map[data->row] = 0;
-	len = 0;
-	fd = open("map.cub", O_RDONLY);
-	line = get_next_line(fd);
-	while (line)
-	{
-		if (len < data->row - 1)
-			data->map[len] = ft_substr(line, 0, ft_strlen(line) - 1);
-		else
-			data->map[len] = ft_strdup(line);
-		len++;
-		free(line);
-		line = get_next_line(fd);
-	}
-	close (fd);
+	data->map[data->row] = NULL;
+	map_parsing(data);
 }
 
 void	initial(t_data *data)

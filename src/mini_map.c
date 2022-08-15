@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:26:37 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/15 11:02:15 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/15 16:57:22 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,33 +21,61 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void	draw_ray(t_data *data, float Bx, float By, int status)
-{
-	float Ax;
-	float Ay;
-	float dx;
-	float dy;
-	float step;
-	float i = 0;
+// void	draw_ray(t_data *data, float Bx, float By, int status)
+// {
+// 	float Ax;
+// 	float Ay;
+// 	float dx;
+// 	float dy;
+// 	float step;
+// 	float i = 0;
 
-	if (!status)
+// 	if (!status)
+// 	{
+// 		Ax = data->player.x * SIZE_ + SIZE_PLYR / 2;
+// 		Ay = data->player.y * SIZE_ + SIZE_PLYR / 2;
+// 		dx = Bx - Ax;
+// 		dy = By - Ay;
+// 		if (dx >= dy)
+// 			step = fabs(dx);
+// 		else
+// 			step = fabs(dy);
+// 		while (i < step)
+// 		{
+// 			Ax += dx / step;
+// 			Ay += dy / step;
+// 			// my_mlx_pixel_put(data, Ax, Ay,0xff0000);
+// 			// put_pixel(data, data->addr, COL_PLAYER, Ax, Ay, 0);
+// 			i++;
+// 		}
+// 	}
+// }
+
+void    draw_ray(t_data *data, float x2, float y2, int color)
+{
+	float x;
+	float y;
+	float dx, dy, step;
+	int i;
+color = 0;
+	dx = (x2 - data->player.x * SIZE_ - SIZE_PLYR / 2);
+	dy = (y2 - data->player.y * SIZE_ - SIZE_PLYR / 2);
+	if (fabsf(dx) >= fabsf(dy))
+		step = fabsf(dx);
+	else
+		step = fabsf(dy);
+	dx = dx / step;
+	dy = dy / step;
+	x = data->player.x * SIZE_ + SIZE_PLYR / 2;
+	y = data->player.y * SIZE_ + SIZE_PLYR / 2;
+	i = 1;
+	while (i <= step)
 	{
-		Ax = data->player.x * SIZE_ + SIZE_PLYR / 2;
-		Ay = data->player.y * SIZE_ + SIZE_PLYR / 2;
-		dx = Bx - Ax;
-		dy = By - Ay;
-		if (dx >= dy)
-			step = fabs(dx);
-		else
-			step = fabs(dy);
-		while (i < step)
-		{
-			Ax += dx / step;
-			Ay += dy / step;
-			// my_mlx_pixel_put(data, Ax, Ay,0xff0000);
-			// put_pixel(data, data->addr, COL_PLAYER, Ax, Ay, 0);
-			i++;
-		}
+		// my_mlx_pixel_put(data->img, x, y, color);
+		put_pixel(data, data->addr, COL_PLAYER, x, y, 0);
+		x = x + dx;
+		y = y + dy;
+		i = i + 1;
 	}
 }
 
@@ -65,10 +93,11 @@ void	draw_player(t_data *data, t_ray *ray, int x, int y, int status)
 			put_pixel(data, data->addr, COL_PLAYER, i++, j, 0);
 		j++;
 	}
-	draw_ray(data, ray->x, ray->y, status);
-	while (ray->next)
+	while (ray)
+	{
+		draw_ray(data, ray->x, ray->y, status);
 		ray = ray->next;
-	draw_ray(data, ray->x, ray->y, status);
+	}
 }
 
 void	draw_mini_map(t_data *data)
@@ -92,7 +121,7 @@ void	draw_mini_map(t_data *data)
 		{
 			if (data->map[j][i] == '1')
 				color = 0x282828;
-			else
+			else if (data->map[j][i] != ' ' && data->map[j][i] != '1')
 				color = 0xCCCCCC;
 			put_pixel(data, data->addr, color, h, v, 0);
 			h++;
@@ -133,7 +162,7 @@ void	draw_moved_mini_map(t_data *data)
 			{
 				if (data->map[j][i] == '1')
 					put_pixel(data, data->addr, 0x282828, h, v, 0);
-				else
+				else if (data->map[j][i] != ' ' && data->map[j][i] != '1')
 					put_pixel(data, data->addr, 0xCCCCCC, h, v, 0);
 			}
 			h++;

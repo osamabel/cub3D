@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/15 10:51:08 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/15 17:18:47 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
+
+int	check_extension(char *path)
+{
+	if (path && !ft_strcmp(&path[ft_strlen(path) - 4], ".cub"))
+		return (0);
+	printf("The scene description file must be a .cub file.\n");
+	return (1);
+}
 
 int update(t_data *data)
 {
@@ -38,9 +46,12 @@ int update(t_data *data)
 	return (0);
 }
 
-int main(void)
+int main(int ac, char **av)
 {
 	t_data data;
+	if (ac != 2 || check_extension(av[1]))
+		return (1);
+	data.mapath = av[1];
 
 	initial(&data);
 	get_info(&data);
