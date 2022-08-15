@@ -6,11 +6,20 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:26:37 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/09 20:02:05 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/15 11:02:15 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
+
+
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
+}
 
 void	draw_ray(t_data *data, float Bx, float By, int status)
 {
@@ -35,7 +44,8 @@ void	draw_ray(t_data *data, float Bx, float By, int status)
 		{
 			Ax += dx / step;
 			Ay += dy / step;
-			put_pixel(data, data->addr, COL_PLAYER, (int)Ax, (int)Ay, 0);
+			// my_mlx_pixel_put(data, Ax, Ay,0xff0000);
+			// put_pixel(data, data->addr, COL_PLAYER, Ax, Ay, 0);
 			i++;
 		}
 	}

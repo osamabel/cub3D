@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/12 18:27:51 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/15 10:51:08 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int update(t_data *data)
 	mlx_clear_window(data->mlx, data->wind);
 	ray = update_ray(data);
 	rendring(data, ray);
-	// mini_map(data, ray);
+	mini_map(data, ray);
 	mlx_put_image_to_window(data->mlx, data->wind, data->img, 0, 0);
 	return (0);
 }
@@ -47,6 +47,6 @@ int main(void)
 	mlx_loop_hook(data.mlx, update, &data);
 	mlx_hook(data.wind, 3, 0, keyprelease, &data);
 	mlx_hook(data.wind, 2, 0, keypress, &data);
-	// mlx_hook(data.wind,6,0, mouse_hook, &data);
+	mlx_hook(data.wind,6,0, mouse_hook, &data);
 	mlx_loop(data.mlx);
 }
