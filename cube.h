@@ -6,7 +6,7 @@
 /*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/15 17:02:16 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/15 17:56:16 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 #include <mlx.h>
 #include <pthread.h>
 #include <stdio.h>
+#include <errno.h>
+#include <string.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include <math.h>
@@ -91,6 +93,8 @@ typedef struct	s_data {
 	int		row;
 	int		col;
 	char		**map;
+	char		*mapath;
+	int		mapLen;
 	float	ray_x;
 	float	ray_y;
 	float	ray_d;
@@ -118,6 +122,7 @@ void		clear_rays(t_ray **list);
 t_ray	*update_ray(t_data *data);
 //read_map.c
 void		read_map(t_data *data);
+void		map_parsing(t_data *data);
 void		initial(t_data *data);
 void		get_info(t_data *data);
 //rendring.c

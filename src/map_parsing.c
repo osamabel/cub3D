@@ -6,7 +6,7 @@
 /*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 16:59:35 by ael-hadd          #+#    #+#             */
-/*   Updated: 2022/08/15 17:00:01 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/15 17:58:27 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ int realLenght(char *line)
 	return (spcs + charachters - lastSpaces);
 }
 
-char *realMap(char *line)
+char *realline(char *line)
 {
 	char *mapLine;
 	int	len;
@@ -201,37 +201,42 @@ char *realMap(char *line)
 	return (mapLine);
 }
 
-void	storeMap(t_data *data, char *line)
-{
-	char **newMap;
-	int i;
+// void	storeMap(t_data *data, char *line)
+// {
+// 	char **newMap;
+// 	int i;
+// 	i = 0;
+// 	newMap = malloc((data->mapLen + 2) * sizeof(char *));
+// 	if (data->mapLen)
+// 	{
+// 		while (i < data->mapLen)
+// 		{
+// 			newMap[i] = ft_strdup(data->map[i]);
+// 			i++;
+// 		}
+// 	}
+// 	newMap[i++] = realline(line);
+// 	newMap[i] = NULL;
+// 	if (data->mapLen != 0)
+// 		ft_free(data->map);
+// 	data->map = newMap;
+// 	data->mapLen++;
+// }
 
-	i = 0;
-	newMap = malloc((data->mapLen + 2) * sizeof(char *));
-	if (data->mapLen)
-	{
-		while (i < data->mapLen)
-		{
-			newMap[i] = ft_strdup(data->map[i]);
-			i++;
-		}
-	}
-	newMap[i++] = realMap(line);
-	newMap[i] = NULL;
-	if (data->mapLen != 0)
-		ft_free(data->map);
-	data->map = newMap;
-	data->mapLen++;
-}
-
-void	read_map(t_data *data)
+void	map_parsing(t_data *data)
 {
 	char	*line;
 	int	fd;
 	int x;
 
 	x = 0;
-	fd = open(data->mapath, O_RDONLY);
+	data->mapLen = 0;
+	if ((fd = open(data->mapath, O_RDONLY)) == -1)
+	{
+		ft_putstr_fd("Error: ", 2);
+		perror(data->mapath);
+		exit(1);
+	}
 	line = get_next_line(fd);
 	data->mapLen = 0;
 	while (line)
@@ -250,7 +255,7 @@ void	read_map(t_data *data)
 			{
 				if (checkForImposter(data, line))
 				{
-					storeMap(data, line);
+					data->map[data->mapLen++] = realline(line);
 				}
 				free(line);
 				line = get_next_line(fd);
