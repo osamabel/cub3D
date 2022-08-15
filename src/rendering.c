@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rendering.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:37:48 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/12 17:04:40 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/15 16:48:27 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void rendring(t_data *data, t_ray *ray)
 	{
 		y = 0;
 		alpha_floor = 255;
-		while (y <= HEIGHT)
+		while (y < HEIGHT)
 		{
 			draw_sky(data, x, y, data->texture.C);
 			draw_floor(data, x, y, data->texture.F, &alpha_floor);

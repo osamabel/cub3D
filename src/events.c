@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   events.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:44:52 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/15 10:52:23 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/15 17:04:51 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int keypress(int keycode, void *parm)
 		data->player.sidedirection = 1;
 	if (keycode == 2)
 		data->player.sidedirection = -1;
+	if (keycode == 53)
+		exit(0);
 	return 0;
 }
 
@@ -62,11 +64,11 @@ int mouse_hook(int x,int y,void *param)
 	t_data *data;
 	static int last_x;
 	float dx;
-(void)y;
 	data = (t_data *)param;
 	dx = last_x - x;
-	// if (y > 0 && y < HEIGHT && x >= 0 && x < WIDTH)
-		data->player.mouse = atan(dx / data->ray_d) * (-0.02 + data->player.rotatespeed);
+	if (y > 0 && y < HEIGHT)
+		data->player.mouse = atan(dx / data->ray_d) * (0.1 + data->player.rotatespeed);
+		
 	last_x = x;
 	return 0;
 }

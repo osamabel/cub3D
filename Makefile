@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+         #
+#    By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/25 09:40:30 by obelkhad          #+#    #+#              #
-#    Updated: 2022/08/10 22:11:20 by obelkhad         ###   ########.fr        #
+#    Updated: 2022/08/15 16:49:01 by ael-hadd         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ $(NAME): $(OBJ)
 %.o:%.c cube.h
 	cc $(CFLAGS) -I.  -Imlx -c $< -o $@
 clean:
-	rm -f $(NAME) $(OBJ)
+	rm -f $(OBJ)
 fclean: clean
 	rm -f $(NAME)
 re: fclean all

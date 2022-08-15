@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:49:32 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/12 14:54:02 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/15 17:05:58 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ t_ray	*update_ray(t_data *data)
 			holder.id = i;
 			holder.x = data->player.v_x;
 			holder.y = data->player.v_y;
+			data->ray_d = holder.distance;
 			add_ray(&ray, new_ray(holder));
 		}
 		else
@@ -107,6 +108,7 @@ t_ray	*update_ray(t_data *data)
 			holder.id = i;
 			holder.x = data->player.h_x;
 			holder.y = data->player.h_y;
+			data->ray_d = holder.distance;
 			add_ray(&ray, new_ray(holder));
 		}
 		angle += ANGLE_VIEW / (WIDTH);
