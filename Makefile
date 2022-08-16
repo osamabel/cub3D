@@ -6,7 +6,7 @@
 #    By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/25 09:40:30 by obelkhad          #+#    #+#              #
-#    Updated: 2022/08/15 17:49:32 by ael-hadd         ###   ########.fr        #
+#    Updated: 2022/08/16 12:15:32 by ael-hadd         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,12 +27,12 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	# make -C libft
-	cc $(CFLAGS) -I.  -o $(NAME) $(OBJ) -L /usr/local/lib -lmlx -framework OpenGL -framework AppKit
+	@# make -C libft
+	@cc $(CFLAGS) -I.  -o $(NAME) $(OBJ) -L /usr/local/lib -lmlx -framework OpenGL -framework AppKit
 %.o:%.c cube.h
-	cc $(CFLAGS) -I.  -Imlx -c $< -o $@
+	@cc $(CFLAGS) -I.  -Imlx -c $< -o $@
 clean:
-	rm -f $(OBJ)
+	@rm -f $(OBJ)
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 re: fclean all

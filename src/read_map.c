@@ -6,7 +6,7 @@
 /*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/15 17:58:00 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/16 12:28:24 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	read_map(t_data *data)
 		exit(1);
 	}
 	char *line = get_next_line(fd);
-	data->col = 0;
 	while (line)
 	{
 		if (data->col < (int)ft_strlen(line))
@@ -49,7 +48,14 @@ void	initial(t_data *data)
 	data->row = 0;
 	data->col = 0;
 
+	printf("%d\n", data->row);
 	read_map(data);
+	data->row = data->mapLen;
+	for (int i = 0; i < data->mapLen; i++)
+	{
+		printf("_%s_\n", data->map[i]);
+	}
+	
 	data->mlx = mlx_init();
 	data->wind = mlx_new_window(data->mlx, WIDTH, HEIGHT, "Cube3D");
 	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);

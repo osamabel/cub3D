@@ -6,7 +6,7 @@
 /*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:26:37 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/15 16:57:22 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/16 12:31:35 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,22 +108,20 @@ void	draw_mini_map(t_data *data)
 	int j;
 	int h = 0;
 	int v = 0;
-	int color;
 
 	j = 0;
 	v_limit = SIZE_;
-	while (v < data->row * SIZE_)
+	while (v + 1 < data->row * SIZE_)
 	{
 		h = 0;
 		i = 0;
 		h_limit = SIZE_;
-		while (h < data->col * SIZE_)
+		while (h + 1 < data->col * SIZE_)
 		{
 			if (data->map[j][i] == '1')
-				color = 0x282828;
+				put_pixel(data, data->addr, 0x282828, h, v, 0);
 			else if (data->map[j][i] != ' ' && data->map[j][i] != '1')
-				color = 0xCCCCCC;
-			put_pixel(data, data->addr, color, h, v, 0);
+				put_pixel(data, data->addr, 0xCCCCCC, h, v, 0);
 			h++;
 			if (h >= h_limit)
 			{
@@ -183,14 +181,15 @@ void	draw_moved_mini_map(t_data *data)
 
 void mini_map(t_data *data, t_ray *ray)
 {
-	if (data->row <= 13)
-	{
+	// if (data->row <= 13)
+	// {
 		draw_mini_map(data);
 		draw_player(data, ray, data->player.x * SIZE_,data->player.y * SIZE_, 0);
-	}
-	else
-	{
-		draw_moved_mini_map(data);
-		draw_player(data, ray, SIZE_ * MINI_MAP_WIDTH / 2 + SIZE_ / 2, SIZE_ * MINI_MAP_HEIGHT / 2 + SIZE_ / 2, 1);
-	}
+		
+	// }
+	// else
+	// {
+	// 	draw_moved_mini_map(data);
+	// 	draw_player(data, ray, SIZE_ * MINI_MAP_WIDTH / 2 + SIZE_ / 2, SIZE_ * MINI_MAP_HEIGHT / 2 + SIZE_ / 2, 1);
+	// }
 }
