@@ -6,7 +6,7 @@
 /*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 16:59:35 by ael-hadd          #+#    #+#             */
-/*   Updated: 2022/08/15 17:58:27 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/16 14:35:50 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int	checkForImposter(t_data *data, char *line)
 	{
 		if (line[i] != ' ' && line[i] != '1'
 			&& line[i] != '0' && line[i] != 'N' && line[i] != 'S'
-			&& line[i] != 'E' && line[i] != 'W')
+			&& line[i] != 'E' && line[i] != 'W' && line[i] != 'D')
 		{
 			printf("_%c_\n", line[i]);
 			ft_error(data, "there is one imposter among us");
@@ -171,7 +171,7 @@ int realLenght(char *line)
 			i++;
 			spcs++;
 		}
-		while (line[i] == '0' || line[i] == '1' || line[i] == 'N' || line[i] == 'S' || line[i] == 'E' || line[i] == 'W')
+		while (line[i] == '0' || line[i] == '1' || line[i] == 'N' || line[i] == 'S' || line[i] == 'E' || line[i] == 'W' || line[i] == 'D')
 		{
 			i++;
 			charachters++;
@@ -249,14 +249,13 @@ void	map_parsing(t_data *data)
 		}
 		else if (line[0] != '\n')
 		{
+
 			if (x != 6)
 				ft_error(data, "tha map content should be the last thing");
 			while (line)
 			{
 				if (checkForImposter(data, line))
-				{
 					data->map[data->mapLen++] = realline(line);
-				}
 				free(line);
 				line = get_next_line(fd);
 			}
@@ -265,5 +264,5 @@ void	map_parsing(t_data *data)
 		free(line);
 		line = get_next_line(fd);
 	}
-	// checkWalls(data);
+	checkWalls(data);
 }

@@ -6,7 +6,7 @@
 /*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/16 12:42:39 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/16 14:03:12 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	initial(t_data *data)
 	data->row = 0;
 	data->col = 0;
 
-	printf("%d\n", data->row);
 	read_map(data);
 	// data->row = data->mapLen;
 	for (int i = 0; i < data->mapLen; i++)
@@ -61,10 +60,11 @@ void	initial(t_data *data)
 	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length, &data->endian);
 
-	data->wall_N = mlx_xpm_file_to_image(data->mlx, "./images/n.xpm",&data->wall_w, &data->wall_h);
-	data->wall_S = mlx_xpm_file_to_image(data->mlx, "./images/n.xpm",&data->wall_w, &data->wall_h);
-	data->wall_E = mlx_xpm_file_to_image(data->mlx, "./images/n.xpm",&data->wall_w, &data->wall_h);
-	data->wall_W = mlx_xpm_file_to_image(data->mlx, "./images/n.xpm",&data->wall_w, &data->wall_h);
+	data->wall_N = mlx_xpm_file_to_image(data->mlx, "images/TECH_3F.xpm",&data->wall_w, &data->wall_h);
+	data->wall_S = mlx_xpm_file_to_image(data->mlx, "images/TECH_3F.xpm",&data->wall_w, &data->wall_h);
+	data->wall_E = mlx_xpm_file_to_image(data->mlx, "images/TECH_3F.xpm",&data->wall_w, &data->wall_h);
+	data->wall_W = mlx_xpm_file_to_image(data->mlx, "images/TECH_3F.xpm",&data->wall_w, &data->wall_h);
+	data->Door = mlx_xpm_file_to_image(data->mlx, "images/TECH_3F.xpm",&data->wall_w, &data->wall_h);
 }
 void	get_info(t_data *data)
 {

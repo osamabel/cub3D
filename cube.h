@@ -6,13 +6,13 @@
 /*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/15 17:56:16 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/16 14:39:28 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE_H
 #define CUBE_H
-#define  SIZE_ 15
+#define  SIZE_ 10
 #define  SIZE_PLYR 5
 #define  WALL_DIFF 0.0005
 #define  WIDTH 1000
@@ -43,6 +43,7 @@ typedef struct	s_ray {
 	float	y;
 	float	distance;
 	char		status;
+	char		type; //w d
 	float	wallheigth;
 	struct s_ray	*next;
 }	t_ray;
@@ -82,6 +83,7 @@ typedef struct	s_data {
 	void		*wall_S;
 	void		*wall_E;
 	void		*wall_W;
+	void		*Door;
 	char		*addr;
 	char 	*wall_buff;
 	int		bits_per_pixel;
@@ -125,6 +127,8 @@ void		read_map(t_data *data);
 void		map_parsing(t_data *data);
 void		initial(t_data *data);
 void		get_info(t_data *data);
+void		checkWalls(t_data *data);
+void		ft_error(t_data *data, char *msg);
 //rendring.c
 void 	rendring(t_data *data, t_ray *ray);
 
