@@ -6,7 +6,7 @@
 /*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:26:37 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/16 12:31:35 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/16 12:39:26 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,12 @@ void	draw_mini_map(t_data *data)
 
 	j = 0;
 	v_limit = SIZE_;
-	while (v + 1 < data->row * SIZE_)
+	while (v + 1 < data->mapLen * SIZE_)
 	{
 		h = 0;
 		i = 0;
 		h_limit = SIZE_;
-		while (h + 1 < data->col * SIZE_)
+		while (h + 1 < (int)ft_strlen(data->map[j]) * SIZE_)
 		{
 			if (data->map[j][i] == '1')
 				put_pixel(data, data->addr, 0x282828, h, v, 0);

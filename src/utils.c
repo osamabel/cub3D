@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 10:10:30 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/12 14:54:26 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/16 12:40:31 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	is_player(char c)
 
 int	point_in_range(t_data *data, int x, int y)
 {
-	if (x < data->col && x >= 0 && y < data->row && y >= 0)
+	if (x < data->col && x >= 0 && y < data->mapLen && y >= 0)
 		return (1);
 	return (0);
 }

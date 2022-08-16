@@ -6,7 +6,7 @@
 /*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/16 12:28:24 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/16 12:42:39 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	initial(t_data *data)
 
 	printf("%d\n", data->row);
 	read_map(data);
-	data->row = data->mapLen;
+	// data->row = data->mapLen;
 	for (int i = 0; i < data->mapLen; i++)
 	{
 		printf("_%s_\n", data->map[i]);
