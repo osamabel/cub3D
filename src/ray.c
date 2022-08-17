@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:49:32 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/15 17:05:58 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/17 08:51:59 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_ray	*new_ray(t_ray holder)
 		return (0);
 	node->id = holder.id;
 	node->status = holder.status;
+	node->type = holder.type;
 	node->x = holder.x;
 	node->y = holder.y;
 	node->distance = holder.distance;
@@ -71,46 +72,54 @@ void	clear_rays(t_ray **list)
 	}
 }
 
+void	find_points(t_data *data, float angle, t_ray *holder)
+{
+	char v;
+	char h;
+
+	data->player.h_x = data->player.x * SIZE_ + SIZE_PLYR / 2;
+	data->player.h_y = data->player.y * SIZE_ + SIZE_PLYR / 2;
+	data->player.v_x = data->player.x * SIZE_ + SIZE_PLYR / 2;
+	data->player.v_y = data->player.y * SIZE_ + SIZE_PLYR / 2;
+	horizontal_initial_points(data, angle);
+	vertical_initial_points(data, angle);
+	h = horizontal_points(data, angle);
+	v = vertical_points(data, angle);
+	if (data->player.v_distance < data->player.h_distance)
+		holder->type = v;
+	else
+		holder->type = h;
+}
+
 t_ray	*update_ray(t_data *data)
 {
 	float	angle;
 	t_ray	*ray;
 	t_ray	holder;
-	int		i=0;
+	int		i = 0;
 
 	ray = NULL;
 	angle = data->player.rotatedirection - ANGLE_VIEW / 2;
 
 	while (angle < data->player.rotatedirection + ANGLE_VIEW / 2)
 	{
-		data->player.h_x = data->player.x * SIZE_ + SIZE_PLYR / 2;
-		data->player.h_y = data->player.y * SIZE_ + SIZE_PLYR / 2;
-		data->player.v_x = data->player.x * SIZE_ + SIZE_PLYR / 2;
-		data->player.v_y = data->player.y * SIZE_ + SIZE_PLYR / 2;
-		horizontal_initial_points(data, angle);
-		vertical_initial_points(data, angle);
-		horizontal_points(data, angle);
-		vertical_points(data, angle);
+		find_points(data, angle, &holder);
 		if (data->player.v_distance < data->player.h_distance)
 		{
 			holder.distance = data->player.v_distance * cos(data->player.rotatedirection - angle);
 			holder.status = 'V';
-			holder.id = i;
 			holder.x = data->player.v_x;
 			holder.y = data->player.v_y;
-			data->ray_d = holder.distance;
-			add_ray(&ray, new_ray(holder));
 		}
 		else
 		{
 			holder.distance = data->player.h_distance * cos(data->player.rotatedirection - angle);
 			holder.status = 'H';
-			holder.id = i;
 			holder.x = data->player.h_x;
 			holder.y = data->player.h_y;
-			data->ray_d = holder.distance;
-			add_ray(&ray, new_ray(holder));
 		}
+		data->ray_d = holder.distance;
+		add_ray(&ray, new_ray(holder));
 		angle += ANGLE_VIEW / (WIDTH);
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 10:10:30 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/16 12:40:31 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/17 10:35:58 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ int	point_in_range(t_data *data, int x, int y)
 char is_wall(t_data *data, int x, int y)
 {
 	if (data->map[y][x] == '1')
-		return (1);
+		return ('W');
+	if (data->map[y][x] == 'D')
+		return ('D');
 	return (0);
 }
 
@@ -73,7 +75,9 @@ int	check_wall(t_data *data, char status)
 		x += size_player / size + WALL_DIFF;
 	if (y - data->player.y > 0)
 		y += size_player / size + WALL_DIFF;
-	return (is_wall(data, (int)x, (int)y));
+	if (is_wall(data, (int)x, (int)y) == 'W')
+		return (1);
+	return (0);
 }
 
 int	mini_map_range(int x, int y)

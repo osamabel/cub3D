@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/16 14:39:28 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/17 11:53:37 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #define  HEIGHT 700
 #define  MINI_MAP_WIDTH 12
 #define  MINI_MAP_HEIGHT 12
-#define  ANGLE_VIEW M_PI /3
+#define  ANGLE_VIEW M_PI / 3
 #define  COL_PLAYER 0xff9933
 #define  WALK_SPEED 0.2
 #define  ROTATE_SPEED 0.1
@@ -68,34 +68,37 @@ typedef struct	s_player {
 
 typedef struct s_texture
 {
-	char	*NO;
+	char *NO;
 	char *SO;
 	char *WE;
 	char *EA;
 	int	F;
 	int	C;
+	void *Door;
+	void		*wall_NO;
+	void		*wall_SO;
+	void		*wall_EA;
+	void		*wall_WE;
+	char 	*wall_buff;
+	int		wall_w;
+	int		wall_h;
+	int		door_w;
+	int		door_h;
 }	t_texture;
 typedef struct	s_data {
 	void		*mlx;
 	void		*wind;
 	void		*img;
-	void		*wall_N;
-	void		*wall_S;
-	void		*wall_E;
-	void		*wall_W;
-	void		*Door;
 	char		*addr;
-	char 	*wall_buff;
 	int		bits_per_pixel;
 	int		line_length;
 	int		line_length_wall;
-	int		wall_w;
-	int		wall_h;
+	int		line_length_door;
 	int		endian;
 	int		row;
 	int		col;
-	char		**map;
-	char		*mapath;
+	char	**map;
+	char	*mapath;
 	int		mapLen;
 	float	ray_x;
 	float	ray_y;
@@ -134,8 +137,7 @@ void 	rendring(t_data *data, t_ray *ray);
 
 void		horizontal_initial_points(t_data *data, float angle);
 void		vertical_initial_points(t_data *data, float angle);
-void		horizontal_points(t_data *data, float angle);
-void		vertical_points(t_data *data, float angle);
+char		horizontal_points(t_data *data, float angle);
+char		vertical_points(t_data *data, float angle);
 
-void 	fire(t_data *data, char *c);
 #endif

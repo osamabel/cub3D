@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 08:58:34 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/12 14:53:53 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/17 10:34:58 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,12 @@ void	horizontal_initial_points(t_data *data, float angle)
 	data->player.h_distance = hypot(h_dx, h_dy);
 }
 
-void	horizontal_points(t_data *data, float angle)
+char	horizontal_points(t_data *data, float angle)
 {
 	float h_dx;
 	float h_dy;
 	float i = 0;
+	char type;
 
 	h_dx = SIZE_ / tan(angle);
 	h_dy = SIZE_;
@@ -48,10 +49,12 @@ void	horizontal_points(t_data *data, float angle)
 	}
 	while (point_in_range(data, (int)(data->player.h_x / SIZE_), (int)((data->player.h_y - i) / SIZE_)))
 	{
-		if (is_wall(data, (int)(data->player.h_x / SIZE_),(int)((data->player.h_y - i) / SIZE_)))
-			break ;
+		type = is_wall(data, (int)(data->player.h_x / SIZE_),(int)((data->player.h_y - i) / SIZE_));
+		if (type == 'W') // w || d || 0
+			break;
 		data->player.h_distance += hypot(h_dx, h_dy);
 		data->player.h_x += h_dx;
 		data->player.h_y += h_dy;
 	}
+	return (type);
 }
