@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/16 12:24:50 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/17 11:57:00 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,11 @@ int main(int ac, char **av)
 	if (ac != 2 || check_extension(av[1]))
 		return (1);
 	data.mapath = av[1];
-
 	initial(&data);
 	get_info(&data);
-	printf("%d\t %d\n", data.mapLen, data.row);
 	mlx_loop_hook(data.mlx, update, &data);
 	mlx_hook(data.wind, 3, 0, keyprelease, &data);
 	mlx_hook(data.wind, 2, 0, keypress, &data);
-	mlx_hook(data.wind,6,0, mouse_hook, &data);
+	// mlx_hook(data.wind,6,0, mouse_hook, &data);
 	mlx_loop(data.mlx);
 }

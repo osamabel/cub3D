@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 09:01:56 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/12 14:53:50 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/17 10:34:17 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,12 @@ void	vertical_initial_points(t_data *data, float angle)
 	data->player.v_distance = hypot(v_dx, v_dy);
 }
 
-void	vertical_points(t_data *data, float angle)
+char	vertical_points(t_data *data, float angle)
 {
 	float v_dx;
 	float v_dy;
 	float i = 0;
+	char type;
 
 	v_dx = SIZE_;
 	v_dy = SIZE_ * tan(angle);
@@ -48,10 +49,12 @@ void	vertical_points(t_data *data, float angle)
 	}
 	while (point_in_range(data, (int)((data->player.v_x - i) / SIZE_), (int)(data->player.v_y / SIZE_)))
 	{
-		if (is_wall(data, (int)((data->player.v_x - i) / SIZE_),(int)(data->player.v_y / SIZE_)))
-			break ;
+		type = is_wall(data, (int)((data->player.v_x - i) / SIZE_),(int)(data->player.v_y / SIZE_));
+		if (type == 'W')
+			break;
 		data->player.v_distance += hypot(v_dx, v_dy);
 		data->player.v_x += v_dx;
 		data->player.v_y += v_dy;
 	}
+	return (type);
 }

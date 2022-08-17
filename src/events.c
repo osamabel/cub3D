@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   events.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:44:52 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/15 17:04:51 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/17 08:49:40 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int mouse_hook(int x,int y,void *param)
 	dx = last_x - x;
 	if (y > 0 && y < HEIGHT)
 		data->player.mouse = atan(dx / data->ray_d) * (0.1 + data->player.rotatespeed);
-		
 	last_x = x;
 	return 0;
 }
