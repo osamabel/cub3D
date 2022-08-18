@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rendering.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:37:48 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/17 15:33:07 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/18 17:19:42 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,34 +54,26 @@ i = 0;
 		{
 			data->texture.wall_buff = mlx_get_data_addr(data->texture.wall_NO, &data->bits_per_pixel, &data->line_length_wall, &data->endian);
 			if (ray->status == 'H')
-			{
-				i = (fmod(ray->x, SIZE_) * data->texture.wall_w) / SIZE_;
-			}
+				i = (fmod(ray->x, SIZE_) * data->texture.no_w) / SIZE_;
 			if (ray->status == 'V')
-			{
-				i = (fmod(ray->y, SIZE_) * data->texture.wall_h) / SIZE_;
-			}
+				i = (fmod(ray->y, SIZE_) * data->texture.no_h) / SIZE_;
 		}
 		else if (ray->type == 'D')
 		{
 			data->texture.wall_buff = mlx_get_data_addr(data->texture.Door, &data->bits_per_pixel, &data->line_length_wall, &data->endian);
 			if (ray->status == 'H')
-			{
 				i = (fmod(ray->x, SIZE_) * data->texture.door_w) / SIZE_;
-			}
 			if (ray->status == 'V')
-			{
 				i = (fmod(ray->y, SIZE_) * data->texture.door_h) / SIZE_;
-			}
 		}
 
 		point = y - (HEIGHT / 2 - ray->wallheigth / 2);
 		pixel = y * data->line_length + x * data->bits_per_pixel/8;
-		j = fmod(point, ray->wallheigth) * data->texture.wall_h / ray->wallheigth;
+		j = fmod(y - (HEIGHT / 2 - ray->wallheigth / 2), ray->wallheigth) * data->texture.no_h / ray->wallheigth;
 		pixel_wall = j * data->line_length_wall + i * data->bits_per_pixel/8;
 
 
-		if (pixel > 0 && pixel_wall > 0 && j < data->texture.wall_h)
+		if (pixel > 0 && pixel_wall > 0 && j < data->texture.no_h)
 		{
 			data->addr[pixel + 0] = data->texture.wall_buff[pixel_wall + 0];
 			data->addr[pixel + 1] = data->texture.wall_buff[pixel_wall + 1];

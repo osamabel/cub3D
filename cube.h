@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/17 11:53:37 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/18 17:18:27 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 #define  SIZE_ 10
 #define  SIZE_PLYR 5
 #define  WALL_DIFF 0.0005
-#define  WIDTH 1000
-#define  HEIGHT 700
+#define  WIDTH 1400
+#define  HEIGHT 800
 #define  MINI_MAP_WIDTH 12
 #define  MINI_MAP_HEIGHT 12
 #define  ANGLE_VIEW M_PI / 3
 #define  COL_PLAYER 0xff9933
-#define  WALK_SPEED 0.2
-#define  ROTATE_SPEED 0.1
-#define  SHADING 50
+#define  WALK_SPEED 0.4
+#define  ROTATE_SPEED 0.2
+#define  SHADING 70
 
 
 #include <mlx.h>
@@ -42,8 +42,8 @@ typedef struct	s_ray {
 	float	x;
 	float	y;
 	float	distance;
-	char		status;
-	char		type; //w d
+	char    status;
+	char    type;
 	float	wallheigth;
 	struct s_ray	*next;
 }	t_ray;
@@ -64,6 +64,7 @@ typedef struct	s_player {
 	float	h_distance;
 	float	v_distance;
 	float	mouse;
+	int	shoot;
 }	t_player;
 
 typedef struct s_texture
@@ -75,13 +76,24 @@ typedef struct s_texture
 	int	F;
 	int	C;
 	void *Door;
-	void		*wall_NO;
-	void		*wall_SO;
-	void		*wall_EA;
-	void		*wall_WE;
+	void	*wall_NO;
+	void	*wall_SO;
+	void	*wall_EA;
+	void	*wall_WE;
+	void	*gun;
+	char 	*gun_buff;
+	int		gun_w;
+	int		gun_h;
+	int		gun_size;
 	char 	*wall_buff;
-	int		wall_w;
-	int		wall_h;
+	int		no_w;
+	int		no_h;
+	int		so_w;
+	int		so_h;
+	int		ea_w;
+	int		ea_h;
+	int		we_w;
+	int		we_h;
 	int		door_w;
 	int		door_h;
 }	t_texture;
@@ -139,5 +151,7 @@ void		horizontal_initial_points(t_data *data, float angle);
 void		vertical_initial_points(t_data *data, float angle);
 char		horizontal_points(t_data *data, float angle);
 char		vertical_points(t_data *data, float angle);
+
+void sprite_gun(t_data *data);
 
 #endif

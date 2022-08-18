@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/18 17:00:22 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/18 17:13:35 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int update(t_data *data)
 	ray = update_ray(data);
 	rendring(data, ray);
 	mini_map(data, ray);
+	sprite_gun(data);
 	mlx_put_image_to_window(data->mlx, data->wind, data->img, 0, 0);
 	return (0);
 }

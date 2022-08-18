@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 12:18:45 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/17 14:41:23 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/18 17:28:17 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
 
-/* IMPORTANT: This is a special ft_split function 
+/* IMPORTANT: This is a special ft_split function
 					that developed to meets our needs in cub3D project.*/
 
 static int	wcount(char const *s, char c)
