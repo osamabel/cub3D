@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rendering.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:37:48 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/17 11:05:00 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/17 15:33:07 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,18 @@ i = 0;
 			if (ray->status == 'V')
 			{
 				i = (fmod(ray->y, SIZE_) * data->texture.wall_h) / SIZE_;
+			}
+		}
+		else if (ray->type == 'D')
+		{
+			data->texture.wall_buff = mlx_get_data_addr(data->texture.Door, &data->bits_per_pixel, &data->line_length_wall, &data->endian);
+			if (ray->status == 'H')
+			{
+				i = (fmod(ray->x, SIZE_) * data->texture.door_w) / SIZE_;
+			}
+			if (ray->status == 'V')
+			{
+				i = (fmod(ray->y, SIZE_) * data->texture.door_h) / SIZE_;
 			}
 		}
 

@@ -6,7 +6,7 @@
 /*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 16:59:35 by ael-hadd          #+#    #+#             */
-/*   Updated: 2022/08/17 15:22:41 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/17 19:57:59 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int	extractColor(t_data *data,char *line)
 		}
 		color[i] = ft_atoi(p[i]);
 	}
-	printf("%d,%d,%d\n", color[0], color[1], color[2]);
 	return ((color[0] << 16) + (color[1] << 8) + color[2]);
 }
 
@@ -257,5 +256,6 @@ void	map_parsing(t_data *data)
 		free(line);
 		line = get_next_line(fd);
 	}
+	free(line);
 	checkWalls(data);
 }

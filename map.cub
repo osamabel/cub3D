@@ -1,10 +1,10 @@
-NO images/W/egpt.xpm
-SO images/W/egpt.xpm
-WE images/W/egpt.xpm
-EA images/W/egpt.xpm
+NO wall3.xpm
+SO wall3.xpm
+WE wall3.xpm
+EA wall3.xpm
 
-F 255,0,0
-C 255,255,255
+F 105,105,105
+C 105,105,105
 
         1111111111111111111111111
         1000000000110000000000001
