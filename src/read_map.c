@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/17 11:46:28 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/17 17:09:22 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,18 @@ void	initial(t_data *data)
 	data->player.walkspeed = WALK_SPEED;
 	data->row = 0;
 	data->col = 0;
+	// sleep (10);
 	read_map(data);
-	printf("> %d\n",data->texture.C);
-	printf("> %d\n",data->texture.F);
 	start_connection(data);
 	data->texture.wall_NO = mlx_xpm_file_to_image(data->mlx, data->texture.NO,&data->texture.wall_w, &data->texture.wall_h);
 	data->texture.wall_SO = mlx_xpm_file_to_image(data->mlx, data->texture.SO,&data->texture.wall_w, &data->texture.wall_h);
 	data->texture.wall_EA = mlx_xpm_file_to_image(data->mlx, data->texture.WE,&data->texture.wall_w, &data->texture.wall_h);
 	data->texture.wall_WE = mlx_xpm_file_to_image(data->mlx, data->texture.EA,&data->texture.wall_w, &data->texture.wall_h);
-	printf("> %d, %d\n",data->texture.wall_w, data->texture.wall_h);
-	data->texture.Door = mlx_xpm_file_to_image(data->mlx, "images/W/123.xpm",&data->texture.door_w, &data->texture.door_h);
+	data->texture.Door = mlx_xpm_file_to_image(data->mlx, "door.xpm",&data->texture.door_w, &data->texture.door_h);
+	if (!data->texture.wall_NO || !data->texture.wall_SO || !data->texture.wall_EA || !data->texture.wall_WE || !data->texture.Door)
+	{
+		ft_error(data, "Error: Failed to load textures");
+	}
 }
 void	get_info(t_data *data)
 {

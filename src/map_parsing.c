@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 16:59:35 by ael-hadd          #+#    #+#             */
-/*   Updated: 2022/08/17 11:46:32 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/17 19:57:59 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,82 +49,74 @@ char	*extractText(char *line)
 	return (info);
 }
 
-int	*extractColor(t_data *data,char *line)
+int	extractColor(t_data *data,char *line)
 {
-	int *color;
+	int color[3];
+	char	**p;
 	int i;
-	int c;
+	// int c;
 	int j;
 
-	color = malloc(3 * sizeof(int));
+	p = ft_split(line, ',');
 	i = 0;
-	j = 0;
-	c = 0;	 
-	while(line[j] && c < 3)
+	while (p[i])
+		i++;
+	if (i != 3)
+		ft_error(data, "Error: RGB color value is not ");
+	i = -1;
+	while (p[++i])
 	{
-		color[c++] = ft_atoi(&line[j]);
-		if (color[i] < 0 || color[i] > 255)
+		j = -1;
+		while (p[i][++j])
 		{
-			free(color);
-			ft_error(data, "color value is out of range");
+			if (!ft_isdigit(p[i][j]) && p[i][j] != ' ')
+				ft_error(data, "Error: RGB color value is not valid");	
 		}
-		while ((line[j] >= '0' && line[j] <= '9'))
-			j++;
-		while (line[j] == ' ' || line[j] == ',' )
-		{
-			if (line[j] == ',')
-				i++;	
-			j++;
-		}
-		if (((line[j] < '0' || line[j] > '9') && line[j] != '\n') || (i != c && c != 3))
-		{
-			free(color);
-			ft_error(data, "color value is not valid");
-		}
+		color[i] = ft_atoi(p[i]);
 	}
-	return (color);
+	return ((color[0] << 16) + (color[1] << 8) + color[2]);
 }
 
 void	meta_data(t_data *data, char *line)
 {
 	int i;
 
-	i = 2;
-	if (line[0] == 'N' && line[1] == 'O')
+	i = 0;
+	if (line[i] == 'N' && line[i + 1] == 'O')
 	{
-		while (line[i] == ' ')
+		while (line[i + 2] == ' ')
 			i++;
-		data->texture.NO = extractText(&line[i]);
+		data->texture.NO = extractText(&line[i + 2]);
 	}
-	else if (line[0] == 'S' && line[1] == 'O')
+	else if (line[i] == 'S' && line[i + 1] == 'O')
 	{
-		while (line[i] == ' ')
+		while (line[i + 2] == ' ')
 			i++;
-		data->texture.SO = extractText(&line[i]);
+		data->texture.SO = extractText(&line[i + 2]);
 	}
-	else if (line[0] == 'W' && line[1] == 'E')
+	else if (line[i] == 'W' && line[i + 1] == 'E')
 	{
-		while (line[i] == ' ')
+		while (line[i + 2] == ' ')
 			i++;
-		data->texture.WE = extractText(&line[i]);
+		data->texture.WE = extractText(&line[i + 2]);
 	}
-	else if (line[0] == 'E' && line[1] == 'A')
+	else if (line[i] == 'E' && line[i + 1] == 'A')
 	{
-		while (line[i] == ' ')
+		while (line[i + 2] == ' ')
 			i++;
-		data->texture.EA = extractText(&line[i]);
+		data->texture.EA = extractText(&line[i + 2]);
 	}
-	else if (line[0] == 'C')
+	else if (line[i] == 'C')
 	{
-		while (line[i] == ' ')
+		while (line[i + 1] == ' ')
 			i++;
-		data->texture.C = *extractColor(data, &line[i]);
+		data->texture.C = extractColor(data, &line[i + 1]);
 	}
-	else if (line[0] == 'F')
+	else if (line[i] == 'F')
 	{
-		while (line[i] == ' ')
+		while (line[i + 1] == ' ')
 			i++;
-		data->texture.F = *extractColor(data, &line[i]);
+		data->texture.F = extractColor(data, &line[i + 1]);
 	}
 }
 
@@ -264,5 +256,6 @@ void	map_parsing(t_data *data)
 		free(line);
 		line = get_next_line(fd);
 	}
+	free(line);
 	checkWalls(data);
 }

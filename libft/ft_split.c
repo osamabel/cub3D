@@ -3,34 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 12:18:45 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/17 11:52:25 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/17 14:41:23 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
+
+/* IMPORTANT: This is a special ft_split function 
+					that developed to meets our needs in cub3D project.*/
 
 static int	wcount(char const *s, char c)
 {
-	int	i;
 	int	n;
+	int	i;
 
 	i = 0;
-	n = 0;
+	n = 1;
 	while (s[i])
-	{
-		if (s[i] != c)
-		{
+		if (s[i++] == c)
 			n++;
-			while (s[i] && s[i] != c)
-				i++;
-		}
-		else
-			i++;
-	}
-	return (n);
+	return (n + 1);
 }
 
 static int	spliting_problem(char **result, int n)
@@ -54,23 +50,20 @@ static char	**str_to_split(char **result, char const *str, char c)
 	i = 0;
 	j = 0;
 	word = 0;
-	while (str[i])
+	while (i < (int)ft_strlen(str))
 	{
-		while (str[i] && str[i] == c)
-			i++;
-		j = i;
-		while (str[j] && str[j] != c)
+		while (str[j] && str[j] != '\n' && str[j] != c)
 			j++;
-		if (i < j)
+		if (str[j] == c || !str[j] || str[j] == '\n')
 		{
-			result[word] = (char *)malloc((j - i + 1) * sizeof(char));
-			if (spliting_problem(result, word))
+			result[word++] = ft_substr(str, i, j - i);
+			if (spliting_problem(result, word - 1))
 				return (0);
-			ft_strlcpy(result[word++], str + i, j - i + 1);
+			j++;
+			i = j;
 		}
-		i = j;
 	}
-	result[word] = 0;
+	result[word] = NULL;
 	return (result);
 }
 
