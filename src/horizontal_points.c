@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 08:58:34 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/17 10:34:58 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/17 18:08:39 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	horizontal_points(t_data *data, float angle)
 	while (point_in_range(data, (int)(data->player.h_x / SIZE_), (int)((data->player.h_y - i) / SIZE_)))
 	{
 		type = is_wall(data, (int)(data->player.h_x / SIZE_),(int)((data->player.h_y - i) / SIZE_));
-		if (type == 'W') // w || d || 0
+		if (type == 'W')
 			break;
 		data->player.h_distance += hypot(h_dx, h_dy);
 		data->player.h_x += h_dx;

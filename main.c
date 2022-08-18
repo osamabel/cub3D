@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/17 11:57:00 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/18 16:28:52 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int update(t_data *data)
 	ray = update_ray(data);
 	rendring(data, ray);
 	mini_map(data, ray);
+	sprite_gun(data);
 	mlx_put_image_to_window(data->mlx, data->wind, data->img, 0, 0);
 	return (0);
 }
