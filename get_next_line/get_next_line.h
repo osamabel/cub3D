@@ -3,27 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/20 09:24:39 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/07/26 09:05:01 by obelkhad         ###   ########.fr       */
+/*   Created: 2021/11/19 14:57:31 by ael-hadd          #+#    #+#             */
+/*   Updated: 2022/08/19 14:23:43 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include<stdlib.h>
-# include<fcntl.h>
-# include<unistd.h>
-# include "../libft/libft.h"
+# include <stdlib.h>
+# include <unistd.h>
+
 # define BUFFER_SIZE 42
 
+//Extrnal Functions
+char	*ft_strchr2(char *s, int c);
+char	*ft_strjoin2(char *s1, char *s2);
+
+//Internal Functions
 char	*get_next_line(int fd);
-size_t	check_end_of_line(char	*buf);
-char	*read_and_store(int fd, char **line, char **lost);
-void	ft_strsplit(char *holder, char **first, char **secend, size_t check);
-void	creat_line(char **line, char **lost, char **buffer);
-char	*ft_strjoin1(char **line, char **str);
-void	ft_strncpy(char *dest, char *src, size_t len);
+
+char	*ft_read_and_save(int fd, char	*save);
+char	*ft_extract_line(char	*save);
+char	*ft_rm_line(char	*save);
+
 #endif

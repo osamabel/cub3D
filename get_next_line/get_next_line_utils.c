@@ -3,38 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/12 21:38:41 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/07/26 10:18:31 by obelkhad         ###   ########.fr       */
+/*   Created: 2021/11/19 10:43:18 by ael-hadd          #+#    #+#             */
+/*   Updated: 2022/08/19 20:04:38 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"get_next_line.h"
+#include "get_next_line.h"
+#include "../libft/libft.h"
 
-size_t	check_end_of_line(char	*buf)
+char	*ft_strchr2(char *s, int c)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
-	while (buf[i] != '\n' && buf[i])
+	if (!s)
+		return (0);
+	if (c == '\0')
+		return ((char *)&s[ft_strlen(s)]);
+	while (s[i] != '\0')
+	{
+		if (s[i] == (char) c)
+			return ((char *)&s[i]);
 		i++;
-	return (i);
+	}
+	return (0);
 }
 
-void	ft_strncpy(char *dest, char *src, size_t len)
+char	*ft_strjoin2(char *s1, char *s2)
 {
 	size_t	i;
+	size_t	c;
+	char	*str;
 
-	i = 0;
-	while (i < len && *(src + i) != '\0')
+	if (!s1)
 	{
-		*(dest + i) = *(src + i);
-		i++;
+		s1 = (char *)malloc(1 * sizeof(char));
+		s1[0] = '\0';
 	}
-	while (i < len)
-	{
-		*(dest + i) = '\0';
-		i++;
-	}
+	if (!s1 || !s2)
+		return (NULL);
+	str = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	if (str == NULL)
+		return (NULL);
+	i = -1;
+	c = 0;
+	if (s1)
+		while (s1[++i] != '\0')
+			str[i] = s1[i];
+	while (s2[c] != '\0')
+		str[i++] = s2[c++];
+	str[i] = '\0';
+	free(s1);
+	return (str);
 }
