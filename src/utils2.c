@@ -1,22 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/14 22:45:38 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/19 20:04:38 by ael-hadd         ###   ########.fr       */
+/*   Created: 2022/08/19 16:41:16 by ael-hadd          #+#    #+#             */
+/*   Updated: 2022/08/20 09:23:07 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cube.h"
 
-void	ft_lstdelone(t_list *lst, void (*del)(void*))
+void	ft_free(char **table)
 {
-	if (lst && del)
-	{
-		del(lst->content);
-		free(lst);
-	}
+	int	i;
+
+	i = -1;
+	if (table)
+		while (table[++i])
+			free(table[i]);
+	free(table);
+}
+
+void	ft_error(t_data *data, char *msg)
+{
+	ft_putendl_fd(msg, 2);
+	free(data->texture.NO);
+	free(data->texture.SO);
+	free(data->texture.WE);
+	free(data->texture.EA);
+	ft_free(data->map);
+	exit(1);
 }

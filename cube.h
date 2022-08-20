@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/18 17:18:27 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/20 09:54:42 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 #define  MINI_MAP_HEIGHT 12
 #define  ANGLE_VIEW M_PI / 3
 #define  COL_PLAYER 0xff9933
-#define  WALK_SPEED 0.4
-#define  ROTATE_SPEED 0.2
+#define  WALK_SPEED 0.3
+#define  ROTATE_SPEED 0.1
 #define  SHADING 70
 
 
@@ -128,6 +128,8 @@ int		is_player(char c);
 int		point_in_range(t_data *data, int x, int y);
 int		check_wall(t_data *data, char status);
 int		mini_map_range(int x, int y);
+void		ft_free(char **table);
+int		is_texture(char *line);
 //keycode.c
 int		keyprelease(int keycode, void *parm);
 int		keypress(int keycode, void *parm);
@@ -139,10 +141,10 @@ void		clear_rays(t_ray **list);
 t_ray	*update_ray(t_data *data);
 //read_map.c
 void		read_map(t_data *data);
-void		map_parsing(t_data *data);
+void		map_parsing(t_data *data, char *line, char **tmp_map, int fd);
 void		initial(t_data *data);
 void		get_info(t_data *data);
-void		checkWalls(t_data *data);
+void		check_walls(t_data *data);
 void		ft_error(t_data *data, char *msg);
 //rendring.c
 void 	rendring(t_data *data, t_ray *ray);

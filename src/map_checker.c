@@ -6,15 +6,15 @@
 /*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:36:13 by ael-hadd          #+#    #+#             */
-/*   Updated: 2022/08/16 14:41:58 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/20 09:44:30 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
 
-int	ft_isAllOne(char *line)
+int	ft_is_all_1(char *line)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (line)
@@ -29,70 +29,95 @@ int	ft_isAllOne(char *line)
 	return (1);
 }
 
-int	checkBorders(char *line)
+int	check_borders(char *line)
 {
-	int i;
+	int	i;
+	int	len;
 
 	i = 0;
-	if (!line[0])
-		return (1);
+	len = ft_strlen(line) - 1;
 	while (line[i] == ' ')
 		i++;
-	if (line[i] != '1' || line[ft_strlen(line) - 1] != '1')
+	if (line[i] != '1')
+		return (0);
+	while (line[len] == ' ')
+		len--;
+	if (line[len] != '1')
 		return (0);
 	return (1);
 }
 
-int	firstLine(t_data data, int index)
-{
-	
-	int i;
-
-	i = -1;
-	if (index == 0)
-	{
-		while (data.map[++i])
-			if (data.map[i][0])
-				return (i);
-	}
-	else
-	{
-		while (data.map[--data.mapLen])
-			if (data.map[data.mapLen][0])
-				return (data.mapLen);
-	}
-	return (-1);
-}
-
-void	checkWalls(t_data *data)
+int	first_line(t_data data, int index)
 {
 	int	i;
 	int	j;
 
-	i = 1;
-	if (!ft_isAllOne(data->map[firstLine(*data, 0)]))
-		ft_error(data, "the map should be surrounded by walls");
-	if (!ft_isAllOne(data->map[firstLine(*data, 1)]))
-		ft_error(data, "the map should be surrounded by walls");
-	while (data->map[i])
+	i = -1;
+	if (!index)
 	{
-		j = 0;
-		if (data->map[i][0] && ft_strlen(data->map[i]) < ft_strlen(data->map[i - 1]) && !ft_isAllOne(&data->map[i - 1][ft_strlen(data->map[i])]))
-			ft_error(data, "the map should be surrounded by walls");
-		if (!checkBorders(data->map[i]))
-			ft_error(data, "the map should be surrounded by walls");
-		if (!data->map[i][0] && (!ft_isAllOne(data->map[i - 1]) || !ft_isAllOne(data->map[i + 1])))
+		while (data.map[++i])
 		{
-			ft_error(data, "the map should be surrounded by walls");
+			j = -1;
+			while (data.map[i][++j])
+				if (data.map[i][j] != ' ')
+					return (i);
 		}
-		while (data->map[i][j])
+	}
+	else
+	{
+		while (data.map[--data.mapLen])
 		{
-			if (data->map[i][0] && data->map[i - 1][0] && data->map[i][j] == ' ' && (data->map[i - 1][j] != ' ' && data->map[i - 1][j] != '1') && (data->map[i][j - 1] != ' ' && data->map[i - 1][j + 1] != '1'))
-				ft_error(data, "the map should be surrounded by walls");
-			else if ((data->map[i][j] == '0' || data->map[i][j] == 'N' || data->map[i][j] == 'S' || data->map[i][j] == 'E' || data->map[i][j] == 'W') && data->map[i - 1][j] == ' ')
-				ft_error(data, "the map should be surrounded by walls");
-			j++;
+			j = -1;
+			while (data.map[data.mapLen][++j])
+				if (data.map[data.mapLen][j] != ' ')
+					return (data.mapLen);
 		}
-		i++;
+	}
+	return (-1);
+}
+
+void	check_walls1(t_data *data, int i, int j)
+{
+	if (data->map[i][j] == '0')
+	{
+		if (data->map[i][j + 1] == ' ' || data->map[i][j - 1] == ' ')
+			ft_error(data, "Error: The map must be closed/surrounded by walls");
+		if (j > (int)ft_strlen(data->map[i - 1]) - 1
+			|| data->map[i - 1][j] == ' ')
+			ft_error(data, "Error: The map must be closed/surrounded by walls");
+		if (j > (int)ft_strlen(data->map[i + 1]) - 1
+			|| data->map[i + 1][j] == ' ')
+			ft_error(data, "Error: The map must be closed/surrounded by walls");
+	}
+	else if (is_player(data->map[i][j]))
+	{
+		if (data->map[i][j + 1] == ' ' || data->map[i][j - 1] == ' ')
+			ft_error(data, "Error: The map must be closed/surrounded by walls");
+		if (j > (int)ft_strlen(data->map[i - 1]) - 1
+			|| data->map[i - 1][j] == ' ')
+			ft_error(data, "Error: The map must be closed/surrounded by walls");
+		if (j > (int)ft_strlen(data->map[i + 1]) - 1
+			|| data->map[i + 1][j] == ' ')
+			ft_error(data, "Error: The map must be closed/surrounded by walls");
+	}
+}
+
+void	check_walls(t_data *data)
+{
+	int	i;
+	int	j;
+
+	if (!ft_is_all_1(data->map[first_line(*data, 0)]))
+		ft_error(data, "Error: The map must be closed/surrounded by walls");
+	if (!ft_is_all_1(data->map[first_line(*data, 1)]))
+		ft_error(data, "Error: The map must be closed/surrounded by walls");
+	i = first_line(*data, 0);
+	while (data->map[++i])
+	{
+		j = -1;
+		if (!check_borders(data->map[i]))
+			ft_error(data, "Error: The map must be closed/surrounded by walls");
+		while (data->map[i][++j])
+			check_walls1(data, i, j);
 	}
 }
