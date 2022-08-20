@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/20 14:41:39 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/20 16:12:36 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	read_map(t_data *data)
 	fd = open(data->mapath, O_RDONLY);
 	if (fd == -1)
 		ft_error(data, "The scene description file connot be found");
-	data->mapLen = 0;
 	line = get_next_line(fd);
 	tmp_map = NULL;
 	while (line)
@@ -46,6 +45,28 @@ void	start_connection(t_data *data)
 			&data->line_length, &data->endian);
 }
 
+void check_path(t_data *data)
+{
+	int fd;
+
+	fd = open(data->texture.NO, O_RDONLY);
+	if (fd == -1)
+		ft_error(data, "Error: NO texture path not found");
+	close (fd);
+	fd = open(data->texture.EA, O_RDONLY);
+	if (fd == -1)
+		ft_error(data, "Error: EA texture path not found");
+	close (fd);
+	fd = open(data->texture.SO, O_RDONLY);
+	if (fd == -1)
+		ft_error(data, "Error: SO texture path not found");
+	close (fd);
+	fd = open(data->texture.WE, O_RDONLY);
+	if (fd == -1)
+		ft_error(data, "Error: WE texture path not found");
+	close (fd);
+}
+
 void	initial(t_data *data)
 {
 	data->player.turndirection = 0;
@@ -63,6 +84,7 @@ void	initial(t_data *data)
 	data->texture.C = 0;
 	data->map = NULL;
 	read_map(data);
+	check_path(data);
 	start_connection(data);
 	data->texture.wall_NO = mlx_xpm_file_to_image(data->mlx, data->texture.NO,
 			&data->texture.no_w, &data->texture.no_h);
@@ -84,16 +106,12 @@ void	get_info(t_data *data)
 	while (data->map[++j])
 	{
 		i = 0;
-		while (data->map[j][i] && data->map[j][i] != '\n')
+		while (data->map[j][i])
 		{
 			if (is_player(data->map[j][i]))
 			{
 				data->player.x = i;
 				data->player.y = j;
-				data->player.h_x = data->player.x * SIZE_ + SIZE_PLYR / 2;
-				data->player.h_y = data->player.y * SIZE_ + SIZE_PLYR / 2;
-				data->player.v_x = data->player.x * SIZE_ + SIZE_PLYR / 2;
-				data->player.v_y = data->player.y * SIZE_ + SIZE_PLYR / 2;
 				if (data->map[j][i] == 'N')
 					data->player.rotatedirection = M_PI_2;
 				if (data->map[j][i] == 'E')

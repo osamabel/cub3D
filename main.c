@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/20 14:43:06 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/20 17:16:20 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ int	update(t_data *data)
 	data->player.rotatedirection += data->player.mouse;
 	data->player.mouse = 0;
 	mlx_clear_window(data->mlx, data->wind);
+	// mlx_destroy_image(data->mlx, data->img);
+	// data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	// data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel,&data->line_length, &data->endian);
 	ray = update_ray(data);
 	rendring(data, ray);
 	mini_map(data, ray);
@@ -54,7 +57,6 @@ int main(int ac, char **av)
 		return (1);
 	data.mapath = av[1];
 	initial(&data);
-	system("leaks cube");
 	get_info(&data);
 	mlx_loop_hook(data.mlx, update, &data);
 	mlx_hook(data.wind, 3, 0, keyprelease, &data);

@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 16:59:35 by ael-hadd          #+#    #+#             */
-/*   Updated: 2022/08/20 14:44:05 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/20 15:21:56 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 char	*extract_path(char *line)
 {
-	char	*info;
 	int		len;
 	int		i;
 
@@ -24,8 +23,7 @@ char	*extract_path(char *line)
 	len = i;
 	while (line[len] && line[len] != '\n')
 		len++;
-	info = ft_substr(line, i, len - i);
-	return (info);
+	return (ft_substr(line, i, len - i));
 }
 
 int	extract_color(t_data *data, char *line)
@@ -51,6 +49,8 @@ int	extract_color(t_data *data, char *line)
 				ft_error(data, "Error: RGB color value is not valid");
 		}
 		color[i] = ft_atoi(p[i]);
+		if (color[i] < 0 || color[i] > 255)
+			ft_error(data, "Error: RGB value is out of rang.");
 	}
 	ft_free(p);
 	return ((color[0] << 16) + (color[1] << 8) + color[2]);
@@ -87,11 +87,8 @@ int	check_for_imposters(t_data *data, char *line)
 	while (i < len - 1)
 	{
 		if (line[i] != ' ' && line[i] != '1'
-			&& line[i] != '0' && !is_player(line[i]) && line[i] != 'D')
-		{
-			printf("_%c_\n", line[i]);
+			&& line[i] != '0' && !is_player(line[i]))
 			ft_error(data, "there is one imposter among us");
-		}
 		i++;
 	}
 	return (1);
@@ -114,7 +111,7 @@ void	map_parsing(t_data *data, char *line, char **tmp_map, int fd)
 			{
 				if (data->col < (int)ft_strlen(line))
 					data->col = ft_strlen(line);
-				data->mapLen++;
+				data->row++;
 				tmp = *tmp_map;
 				*tmp_map = ft_strjoin(*tmp_map, line);
 				free(tmp);

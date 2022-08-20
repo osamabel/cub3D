@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:37:48 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/19 21:40:43 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/20 16:58:42 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,15 @@ void draw_wall(t_data *data, t_ray *ray, int x, int y, int *alpha)
 	int j;
 	int pixel_wall;
 	int pixel;
-	float point;
 i = 0;
 	if (y > (HEIGHT / 2) - (ray->wallheigth / 2) && y <= (HEIGHT / 2) + (ray->wallheigth / 2))
 	{
 		*alpha = 0;
-		*alpha = (int)ray->distance + SHADING;
+		*alpha = (int)ray->distance + 70;
 		if (*alpha > 255)
 			*alpha = 255;
 
+		data->texture.wall_buff = mlx_get_data_addr(data->texture.wall_EA, &data->bits_per_pixel, &data->line_length_wall, &data->endian);
 		if (ray->status == 'H')
 		{
 			if (ray->y < data->player.y * SIZE_ + SIZE_PLYR / 2)
@@ -63,12 +63,10 @@ i = 0;
 				data->texture.wall_buff = mlx_get_data_addr(data->texture.wall_EA, &data->bits_per_pixel, &data->line_length_wall, &data->endian);
 			i = (fmod(ray->y, SIZE_) * data->texture.no_h) / SIZE_;
 		}
-		point = y - (HEIGHT / 2 - ray->wallheigth / 2);
+
 		pixel = y * data->line_length + x * data->bits_per_pixel/8;
 		j = fmod(y - (HEIGHT / 2 - ray->wallheigth / 2), ray->wallheigth) * data->texture.no_h / ray->wallheigth;
 		pixel_wall = j * data->line_length_wall + i * data->bits_per_pixel/8;
-
-
 		if (pixel > 0 && pixel_wall > 0 && j < data->texture.no_h)
 		{
 			data->addr[pixel + 0] = data->texture.wall_buff[pixel_wall + 0];

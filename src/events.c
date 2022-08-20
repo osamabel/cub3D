@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:44:52 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/18 21:01:01 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/20 15:59:17 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ int keypress(int keycode, void *parm)
 		data->player.sidedirection = 1;
 	if (keycode == 2)
 		data->player.sidedirection = -1;
-	if (keycode == 53)
-		exit(0);
 	if (keycode == 49)
 		data->player.shoot = 1;
+	if (keycode == 53)
+		exit(0);
 	return 0;
 }
 

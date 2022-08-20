@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_checker.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:36:13 by ael-hadd          #+#    #+#             */
-/*   Updated: 2022/08/20 09:44:30 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/20 15:33:40 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,12 @@ int	first_line(t_data data, int index)
 	}
 	else
 	{
-		while (data.map[--data.mapLen])
+		while (data.map[--data.row])
 		{
 			j = -1;
-			while (data.map[data.mapLen][++j])
-				if (data.map[data.mapLen][j] != ' ')
-					return (data.mapLen);
+			while (data.map[data.row][++j])
+				if (data.map[data.row][j] != ' ')
+					return (data.row);
 		}
 	}
 	return (-1);

@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 11:17:25 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/20 14:42:36 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/20 16:09:42 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,13 @@
 #define CUBE_H
 #define  SIZE_ 10
 #define  SIZE_PLYR 5
-#define  WALL_DIFF 0.005
 #define  WIDTH 1200
 #define  HEIGHT 800
 #define  MINI_MAP_WIDTH 12
 #define  MINI_MAP_HEIGHT 12
 #define  ANGLE_VIEW M_PI / 3
-#define  COL_PLAYER 0xff9933
 #define  WALK_SPEED 0.2
 #define  ROTATE_SPEED 0.07
-#define  SHADING 70
 
 
 #include <mlx.h>
@@ -38,12 +35,10 @@
 #include "libft/libft.h"
 
 typedef struct	s_ray {
-	int		id;
 	float	x;
 	float	y;
 	float	distance;
 	char    status;
-	char    type;
 	float	wallheigth;
 	struct s_ray	*next;
 }	t_ray;
@@ -111,9 +106,6 @@ typedef struct	s_data {
 	int		col;
 	char	**map;
 	char	*mapath;
-	int		mapLen;
-	float	mid_ray_x;
-	float	mid_ray_y;
 	float	mid_ray_d;
 	char		status;
 	t_player	player;
