@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 16:59:35 by ael-hadd          #+#    #+#             */
-/*   Updated: 2022/08/17 19:57:59 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/20 12:53:48 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,11 +230,11 @@ void	map_parsing(t_data *data)
 		exit(1);
 	}
 	line = get_next_line(fd);
-	data->mapLen = 0;
 	while (line)
 	{
-		if (line[0] == 'N' || line[0] == 'S' || line[0] == 'W'
-			|| line[0] == 'E' || line[0] == 'F' || line[0] == 'C')
+		// if (line[0] == 'N' || line[0] == 'S' || line[0] == 'W'
+		// 	|| line[0] == 'E' || line[0] == 'F' || line[0] == 'C')
+		if (is_player(line[0]) || line[0] == 'F' || line[0] == 'C')
 		{
 			meta_data(data, line);
 			x++;

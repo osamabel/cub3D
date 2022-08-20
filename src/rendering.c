@@ -6,20 +6,19 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:37:48 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/18 17:19:42 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/19 21:40:43 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
 
-void	draw_sky(t_data *data, int x, int y, int color)
+void	draw_sky(t_data *data, int x, int y, int color, int *alpha)
 {
 	if (y <= (HEIGHT / 2))
 	{
-		if (y > 254)
-			put_pixel(data, data->addr, color, x, y, 255);
-		else
-			put_pixel(data, data->addr, color, x, y, y);
+		if (HEIGHT / 2 - y < 255)
+			(*alpha)++;
+		put_pixel(data, data->addr, color, x, y, *alpha);
 	}
 }
 
@@ -27,11 +26,9 @@ void	draw_floor(t_data *data, int x, int y, int color, int *alpha)
 {
 	if (y >= (HEIGHT / 2))
 	{
-		if (*alpha < 1)
-			put_pixel(data, data->addr, color, x, y, 0);
-		else
-			put_pixel(data, data->addr, color, x, y, *alpha);
-		(*alpha)--;
+		if (y - HEIGHT / 2 < 255)
+			(*alpha)--;
+		put_pixel(data, data->addr, color, x, y, *alpha);
 	}
 }
 
@@ -50,23 +47,22 @@ i = 0;
 		if (*alpha > 255)
 			*alpha = 255;
 
-		if (ray->type == 'W')
+		if (ray->status == 'H')
 		{
-			data->texture.wall_buff = mlx_get_data_addr(data->texture.wall_NO, &data->bits_per_pixel, &data->line_length_wall, &data->endian);
-			if (ray->status == 'H')
-				i = (fmod(ray->x, SIZE_) * data->texture.no_w) / SIZE_;
-			if (ray->status == 'V')
-				i = (fmod(ray->y, SIZE_) * data->texture.no_h) / SIZE_;
+			if (ray->y < data->player.y * SIZE_ + SIZE_PLYR / 2)
+				data->texture.wall_buff = mlx_get_data_addr(data->texture.wall_NO, &data->bits_per_pixel, &data->line_length_wall, &data->endian);
+			if (ray->y > data->player.y * SIZE_ + SIZE_PLYR / 2)
+				data->texture.wall_buff = mlx_get_data_addr(data->texture.wall_SO, &data->bits_per_pixel, &data->line_length_wall, &data->endian);
+			i = (fmod(ray->x, SIZE_) * data->texture.no_w) / SIZE_;
 		}
-		else if (ray->type == 'D')
+		if (ray->status == 'V')
 		{
-			data->texture.wall_buff = mlx_get_data_addr(data->texture.Door, &data->bits_per_pixel, &data->line_length_wall, &data->endian);
-			if (ray->status == 'H')
-				i = (fmod(ray->x, SIZE_) * data->texture.door_w) / SIZE_;
-			if (ray->status == 'V')
-				i = (fmod(ray->y, SIZE_) * data->texture.door_h) / SIZE_;
+			if (ray->x < data->player.x * SIZE_ + SIZE_PLYR / 2)
+				data->texture.wall_buff = mlx_get_data_addr(data->texture.wall_WE, &data->bits_per_pixel, &data->line_length_wall, &data->endian);
+			if (ray->x > data->player.x * SIZE_ + SIZE_PLYR / 2)
+				data->texture.wall_buff = mlx_get_data_addr(data->texture.wall_EA, &data->bits_per_pixel, &data->line_length_wall, &data->endian);
+			i = (fmod(ray->y, SIZE_) * data->texture.no_h) / SIZE_;
 		}
-
 		point = y - (HEIGHT / 2 - ray->wallheigth / 2);
 		pixel = y * data->line_length + x * data->bits_per_pixel/8;
 		j = fmod(y - (HEIGHT / 2 - ray->wallheigth / 2), ray->wallheigth) * data->texture.no_h / ray->wallheigth;
@@ -88,6 +84,7 @@ void rendring(t_data *data, t_ray *ray)
 	int x;
 	int y;
 	int alpha_floor;
+	int alpha_sky;
  	int alpha_wall;
 
 	y = 0;
@@ -96,9 +93,10 @@ void rendring(t_data *data, t_ray *ray)
 	{
 		y = 0;
 		alpha_floor = 255;
+		alpha_sky = 0;
 		while (y < HEIGHT)
 		{
-			draw_sky(data, x, y, data->texture.C);
+			draw_sky(data, x, y, data->texture.C, &alpha_sky);
 			draw_floor(data, x, y, data->texture.F, &alpha_floor);
 			draw_wall(data, ray, x, y, &alpha_wall);
 			y++;

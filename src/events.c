@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:44:52 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/18 17:23:12 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/18 21:01:01 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int mouse_hook(int x,int y,void *param)
 	data = (t_data *)param;
 	dx = last_x - x;
 	if (y > 0 && y < HEIGHT)
-		data->player.mouse = atan(dx / data->ray_d) * (0.1 + data->player.rotatespeed);
+		data->player.mouse = atan(dx / data->mid_ray_d) * (data->player.rotatespeed);
 	last_x = x;
 	return 0;
 }

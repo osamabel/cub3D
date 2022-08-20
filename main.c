@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/18 17:13:35 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/18 21:00:19 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,6 @@ int main(int ac, char **av)
 	mlx_loop_hook(data.mlx, update, &data);
 	mlx_hook(data.wind, 3, 0, keyprelease, &data);
 	mlx_hook(data.wind, 2, 0, keypress, &data);
-	// mlx_hook(data.wind,6,0, mouse_hook, &data);
+	mlx_hook(data.wind,6,0, mouse_hook, &data);
 	mlx_loop(data.mlx);
 }

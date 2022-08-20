@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/18 17:27:01 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/20 12:47:09 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void	read_map(t_data *data)
 {
 	int fd;
+
+	data->row = 0;
 	if ((fd = open(data->mapath, O_RDONLY)) == -1)
 	{
 		ft_putstr_fd("Error: ", 2);
@@ -31,7 +33,7 @@ void	read_map(t_data *data)
 		line = get_next_line(fd);
 	}
 	close (fd);
-	data->map = malloc(sizeof(char*) * (data->row + 1));
+	data->map = malloc(sizeof(char *) * (data->row + 1));
 	data->map[data->row] = NULL;
 	map_parsing(data);
 }
@@ -51,8 +53,6 @@ void	initial(t_data *data)
 	data->player.sidedirection = 0;
 	data->player.rotatespeed = ROTATE_SPEED;
 	data->player.walkspeed = WALK_SPEED;
-	data->row = 0;
-	data->col = 0;
 	read_map(data);
 	start_connection(data);
 	data->texture.wall_NO = mlx_xpm_file_to_image(data->mlx, data->texture.NO,&data->texture.no_w, &data->texture.no_h);
@@ -61,7 +61,6 @@ void	initial(t_data *data)
 	data->texture.wall_WE = mlx_xpm_file_to_image(data->mlx, data->texture.EA,&data->texture.we_w, &data->texture.we_h);
 	data->texture.Door = mlx_xpm_file_to_image(data->mlx, "images/door.xpm",&data->texture.door_w, &data->texture.door_h);
 }
-
 void	get_info(t_data *data)
 {
 	int i = 0;
