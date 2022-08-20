@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 10:10:30 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/20 09:52:48 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/20 14:44:00 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,10 @@ int	point_in_range(t_data *data, int x, int y)
 	return (0);
 }
 
-char is_wall(t_data *data, int x, int y)
+int is_wall(t_data *data, int x, int y)
 {
 	if (data->map[y][x] == '1')
-		return ('W');
-	if (data->map[y][x] == 'D')
-		return ('D');
+		return (1);
 	return (0);
 }
 
@@ -66,31 +64,50 @@ int	is_texture(char *line)
 
 int	check_wall(t_data *data, char status)
 {
-	float	x = 0;
-	float	y = 0;
-	float	size_player = SIZE_PLYR;
-	float	size = SIZE_;
+	float	x;
+	float	y;
+	int	check1;
+	int	check2;
 
+	x = 0;
+	y = 0;
 	if (status == 'S')
 	{
-		x = data->player.x + cos(data->player.rotatedirection + M_PI_2) * data->player.walkspeed * data->player.sidedirection + WALL_DIFF;
-		y = data->player.y + -sin(data->player.rotatedirection + M_PI_2) * data->player.walkspeed * data->player.sidedirection + WALL_DIFF;
+		x = data->player.x + cos(data->player.rotatedirection + M_PI_2) * data->player.walkspeed * data->player.sidedirection;
+		y = data->player.y + -sin(data->player.rotatedirection + M_PI_2) * data->player.walkspeed * data->player.sidedirection;
 	}
 	if (status == 'W')
 	{
-		x = data->player.x + cos(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection + WALL_DIFF;
-		y = data->player.y + -sin(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection + WALL_DIFF;
+		x = data->player.x + cos(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection;
+		y = data->player.y + -sin(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection;
 	}
-	if (x - data->player.x > 0)
-		x += size_player / size + WALL_DIFF;
-	if (y - data->player.y > 0)
-		y += size_player / size + WALL_DIFF;
-	if (is_wall(data, (int)x, (int)y) == 'W')
-		return (1);
+	if (y < data->player.y)
+	{
+		check1 = is_wall(data, x, y);
+		check2 = is_wall(data, x + 0.4, y);
+		if (check1 || check2)
+			return (1);
+	}
+	if (y > data->player.y)
+	{
+		check1 = is_wall(data, x, y + 0.4);
+		check2 = is_wall(data, x + 0.4, y + 0.4);
+		if (check1 || check2)
+			return (1);
+	}
+	if (x < data->player.x)
+	{
+		check1 = is_wall(data, x , y);
+		check2 = is_wall(data, x, y + 0.4);
+		if (check1 || check2)
+			return (1);
+	}
+	if (x > data->player.x)
+	{
+		check1 = is_wall(data, x + 0.4, y );
+		check2 = is_wall(data, x + 0.4, y + 0.4);
+		if (check1 || check2)
+			return (1);
+	}
 	return (0);
-}
-
-int	mini_map_range(int x, int y)
-{
-	return(x > SIZE_ && x < SIZE_ * MINI_MAP_WIDTH && y > SIZE_ && y < SIZE_ * MINI_MAP_HEIGHT);
 }

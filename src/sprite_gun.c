@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 16:02:44 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/18 16:33:14 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/19 16:11:49 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,14 @@ void gun_shoot(t_data *data)
 	else if (frame < 3)
 		data->texture.gun = mlx_xpm_file_to_image(data->mlx, "images/gun/shoot/shoot3.xpm",&data->texture.gun_w, &data->texture.gun_h);
 	else if (frame < 4)
-		data->texture.gun = mlx_xpm_file_to_image(data->mlx, "images/gun/shoot/shoot4.xpm",&data->texture.gun_w, &data->texture.gun_h);
-	else if (frame < 5)
 		data->texture.gun = mlx_xpm_file_to_image(data->mlx, "images/gun/shoot/shoot5.xpm",&data->texture.gun_w, &data->texture.gun_h);
-	else if (frame < 4)
-		data->texture.gun = mlx_xpm_file_to_image(data->mlx, "images/gun/shoot/shoot6.xpm",&data->texture.gun_w, &data->texture.gun_h);
 	else if (frame < 5)
-		data->texture.gun = mlx_xpm_file_to_image(data->mlx, "images/gun/shoot/shoot7.xpm",&data->texture.gun_w, &data->texture.gun_h);
+		data->texture.gun = mlx_xpm_file_to_image(data->mlx, "images/gun/shoot/shoot6.xpm",&data->texture.gun_w, &data->texture.gun_h);
 	else if (frame < 6)
+		data->texture.gun = mlx_xpm_file_to_image(data->mlx, "images/gun/shoot/shoot7.xpm",&data->texture.gun_w, &data->texture.gun_h);
+	else if (frame < 7)
 		data->texture.gun = mlx_xpm_file_to_image(data->mlx, "images/gun/shoot/shoot8.xpm",&data->texture.gun_w, &data->texture.gun_h);
-	if(frame == 6)
+	if(frame == 8)
 	{
 		data->player.shoot = 0;
 		frame = 0;

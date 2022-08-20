@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:26:37 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/18 17:24:45 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/19 22:20:06 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,7 @@ void	draw_mini_map(t_data *data)
 		{
 			if (data->map[j][i] == '1')
 				put_pixel(data, data->addr, 0x282828, h, v, 0);
-			if (data->map[j][i] == 'D')
-				put_pixel(data, data->addr, 0x00FF00, h, v, 0);
-			else if (data->map[j][i] != ' ' && data->map[j][i] != '1' && data->map[j][i] != 'D')
+			else if (data->map[j][i] == '0' || is_player((data->map[j][i])))
 				put_pixel(data, data->addr, 0xCCCCCC, h, v, 0);
 			h++;
 			if (h >= h_limit)

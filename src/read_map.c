@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/20 09:46:36 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/20 14:41:39 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void	initial(t_data *data)
 	data->texture.Door = mlx_xpm_file_to_image(data->mlx, "images/door.xpm",
 			&data->texture.door_w, &data->texture.door_h);
 }
-
 void	get_info(t_data *data)
 {
 	int	i;
