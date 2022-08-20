@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/18 17:13:35 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/20 09:30:40 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	check_extension(char *path)
 	return (1);
 }
 
-int update(t_data *data)
+int	update(t_data *data)
 {
 	t_ray	*ray;
 
@@ -54,6 +54,7 @@ int main(int ac, char **av)
 		return (1);
 	data.mapath = av[1];
 	initial(&data);
+	system("leaks cube");
 	get_info(&data);
 	mlx_loop_hook(data.mlx, update, &data);
 	mlx_hook(data.wind, 3, 0, keyprelease, &data);

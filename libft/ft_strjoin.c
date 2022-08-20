@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 20:55:23 by obelkhad          #+#    #+#             */
-/*   Updated: 2021/11/12 19:17:56 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/19 17:13:22 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,26 @@
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char			*p;
-	unsigned int	l1;
-	unsigned int	l2;
+	char	*news;
+	int		inews;
+	int		is;
 
+	is = 0;
+	inews = 0;
 	if (!s1 && !s2)
-		return (0);
-	if (!s1 && s2)
+		return (NULL);
+	if (!s1)
 		return (ft_strdup(s2));
-	if (!s2 && s1)
+	if (!s2)
 		return (ft_strdup(s1));
-	l1 = ft_strlen(s1);
-	l2 = ft_strlen(s2);
-	p = malloc((l1 + l2 + 1) * sizeof(char));
-	if (!p)
+	news = malloc((ft_strlen(s1) + ft_strlen(s2)) * sizeof(char) + 1);
+	if (!news)
 		return (0);
-	ft_memcpy(p, s1, l1);
-	ft_strlcpy(p + l1, s2, l2 + 1);
-	return (p);
+	while (s1[is])
+		news[inews++] = s1[is++];
+	is = 0;
+	while (s2[is])
+		news[inews++] = s2[is++];
+	news[inews] = 0;
+	return (news);
 }

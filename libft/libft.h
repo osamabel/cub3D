@@ -6,7 +6,7 @@
 /*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 15:24:14 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/15 17:53:51 by ael-hadd         ###   ########.fr       */
+/*   Updated: 2022/08/19 13:27:33 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		ft_isdigit(int c);
 int		ft_isalnum(int c);
 int		ft_isascii(int c);
 int		ft_isprint(int c);
-size_t		ft_strlen(const char *c);
+size_t	ft_strlen(const char *c);
 void		*ft_memset(void *buf, int ch, size_t len);
 void		ft_bzero(void *str, size_t n);
 void		*ft_memcpy(void *dst, const void *src, size_t n);
@@ -44,6 +44,7 @@ int		ft_strcmp(const char *s1, const char *s2);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		*ft_strtrim(char const *s1, char const *set);
+char		**ft_split2(char const *s, char c);
 char		**ft_split(char const *s, char c);
 char		*ft_itoa(int n);
 char		*ft_strmapi(char const *s, char (*f)(unsigned int, char));

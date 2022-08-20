@@ -3,105 +3,105 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/10 14:20:15 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/07/26 10:18:08 by obelkhad         ###   ########.fr       */
+/*   Created: 2021/11/19 10:39:55 by ael-hadd          #+#    #+#             */
+/*   Updated: 2022/08/19 20:04:38 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"get_next_line.h"
+#include "get_next_line.h"
+#include "../libft/libft.h"
 
-void	creat_line(char **line, char **lost, char **buffer)
+char	*ft_extract_line(char *save)
 {
-	size_t	check;
-	char	*last;
-	char	*holder;
+	int		i;
+	char	*l;
 
-	check = check_end_of_line(*buffer);
-	if (check < BUFFER_SIZE)
+	i = 0;
+	if (!save[i])
+		return (NULL);
+	while (save[i] && save[i] != '\n')
+		i++;
+	l = (char *)malloc(sizeof(char) * (i + 2));
+	if (!l)
+		return (NULL);
+	i = 0;
+	while (save[i] && save[i] != '\n')
 	{
-		holder = ft_strjoin(*line, *lost);
-		free(*line);
-		free(*lost);
-		*line = ft_strdup(holder);
-		free(holder);
-		ft_strsplit(*buffer, &last, lost, check);
-		holder = ft_strjoin(*line, last);
-		free(last);
+		l[i] = save[i];
+		i++;
 	}
-	else
-		ft_strjoin(*line, *buffer);
-	*line = ft_strdup(holder);
-	if (*buffer)
-		free(*buffer);
-	buffer = NULL;
+	if (save[i] == '\n')
+	{
+		l[i] = save[i];
+		i++;
+	}
+	l[i] = '\0';
+	return (l);
 }
 
-void	ft_strsplit(char *holder, char **first, char **secend, size_t check)
+char	*ft_rm_line(char *save)
 {
-	char	*lost;
+	int		i;
+	int		c;
+	char	*s;
 
-	if (check < ft_strlen(holder))
+	i = 0;
+	while (save[i] && save[i] != '\n')
+		i++;
+	if (!save[i])
 	{
-		*first = (char *)malloc(sizeof(char) * check + 2);
-		ft_strncpy(*first, holder, check + 1);
-		*(*first + check + 1) = '\0';
-		lost = (char *)malloc(sizeof(char) * (ft_strlen(holder) - check));
-		ft_strncpy(lost, holder + check + 1, ft_strlen(holder) - check);
-		if (*lost == '\0')
-		{
-			free(lost);
-			lost = NULL;
-		}
-		free(*secend);
-		*secend = lost;
+		free(save);
+		return (NULL);
 	}
-	else
-	{
-		*first = (char *)malloc(sizeof(char) * check + 1);
-		ft_strncpy(*first, holder, check + 1);
-		free(*secend);
-		*secend = NULL;
-	}
+	s = (char *)malloc(sizeof(char) * (ft_strlen(save) - i + 1));
+	if (!s)
+		return (NULL);
+	i++;
+	c = 0;
+	while (save[i])
+		s[c++] = save[i++];
+	s[c] = '\0';
+	free(save);
+	return (s);
 }
 
-char	*read_and_store(int fd, char **line, char **lost)
+char	*ft_read_and_save(int fd, char *save)
 {
-	char	*buffer;
-	int		read_char;
-	size_t	check;
+	char	*buff;
+	int		read_bytes;
 
-	check = BUFFER_SIZE;
-	while (check == BUFFER_SIZE)
+	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buff)
+		return (NULL);
+	read_bytes = 1;
+	while (!ft_strchr2(save, '\n') && read_bytes != 0)
 	{
-		buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-		read_char = read(fd, buffer, BUFFER_SIZE);
-		if (read_char <= 0)
+		read_bytes = read(fd, buff, BUFFER_SIZE);
+		if (read_bytes == -1)
 		{
-			if (buffer)
-				free(buffer);
-			buffer = NULL;
-			return (*line);
+			free(buff);
+			return (NULL);
 		}
-		buffer[read_char] = '\0';
-		check = check_end_of_line(buffer);
-		creat_line(line, lost, &buffer);
+		buff[read_bytes] = '\0';
+		save = ft_strjoin2(save, buff);
 	}
-	return (*line);
+	free(buff);
+	return (save);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*lost;
 	char		*line;
+	static char	*save;
 
-	line = NULL;
-	if (lost && check_end_of_line(lost) <= ft_strlen(lost))
-	{
-		ft_strsplit(lost, &line, &lost, check_end_of_line(lost));
-		if (check_end_of_line(line) < ft_strlen(line))
-			return (line);
-	}
-	return (read_and_store(fd, &line, &lost));
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (0);
+	save = ft_read_and_save(fd, save);
+	if (!save)
+		return (NULL);
+	line = ft_extract_line(save);
+	save = ft_rm_line(save);
+	return (line);
 }

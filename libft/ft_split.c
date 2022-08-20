@@ -3,79 +3,83 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-hadd <ael-hadd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/17 12:18:45 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/18 17:28:17 by obelkhad         ###   ########.fr       */
+/*   Created: 2022/08/19 17:12:32 by ael-hadd          #+#    #+#             */
+/*   Updated: 2022/08/19 20:04:38 by ael-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
-/* IMPORTANT: This is a special ft_split function
-					that developed to meets our needs in cub3D project.*/
-
-static int	wcount(char const *s, char c)
+static size_t	str_count(char const *s, char c)
 {
-	int	n;
-	int	i;
+	size_t	i;
+	size_t	count;
 
 	i = 0;
-	n = 1;
-	while (s[i])
-		if (s[i++] == c)
-			n++;
-	return (n + 1);
-}
-
-static int	spliting_problem(char **result, int n)
-{
-	if (!result[n])
+	count = 0;
+	while (s[i] != '\0')
 	{
-		while (n >= 0)
-			free (result[n--]);
-		free (result);
-		return (1);
+		while (s[i] == c)
+			i++;
+		if (s[i])
+			count++;
+		while (s[i] != c && s[i])
+			i++;
 	}
-	return (0);
+	return (count);
 }
 
-static char	**str_to_split(char **result, char const *str, char c)
+static	char	**freee(char **tab)
 {
-	int	i;
-	int	j;
-	int	word;
+	unsigned int	i;
 
 	i = 0;
-	j = 0;
-	word = 0;
-	while (i < (int)ft_strlen(str))
+	while (tab[i])
 	{
-		while (str[j] && str[j] != '\n' && str[j] != c)
-			j++;
-		if (str[j] == c || !str[j] || str[j] == '\n')
-		{
-			result[word++] = ft_substr(str, i, j - i);
-			if (spliting_problem(result, word - 1))
-				return (0);
-			j++;
-			i = j;
-		}
+		free(tab[i]);
+		i++;
 	}
-	result[word] = NULL;
-	return (result);
+	free(tab);
+	return (NULL);
+}
+
+static	char	**put_split(char const *s, char c)
+{
+	size_t	start;
+	size_t	end;
+	size_t	i;
+	char	**split;
+
+	start = 0;
+	end = 0;
+	i = 0;
+	split = (char **)malloc(sizeof(char *) * (str_count(s, c) + 1));
+	if (!split)
+		return (NULL);
+	while (i < str_count(s, c))
+	{
+		while (s[start] == c)
+			start++;
+		end = start;
+		while (s[end] != c && s[end])
+			end++;
+		split[i++] = ft_substr(s, start, (end - start));
+		if (!split[i - 1])
+			return (freee(split));
+		start = end;
+	}
+	split[i] = NULL;
+	return (split);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**split_str;
+	char	**split;
 
 	if (!s)
-		return (0);
-	split_str = NULL;
-	split_str = (char **) malloc((wcount(s, c) + 1) * sizeof(char *));
-	if (!split_str)
-		return (0);
-	return (str_to_split(split_str, s, c));
+		return (NULL);
+	split = put_split(s, c);
+	return (split);
 }
