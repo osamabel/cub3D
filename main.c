@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/20 17:16:20 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/21 16:21:53 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,28 +20,35 @@ int	check_extension(char *path)
 	return (1);
 }
 
+void	update_player(t_data *data)
+{
+	if (data->player.sidedirection && !check_wall(data, 'S'))
+	{
+		data->player.x += cos(data->player.rotatedirection + M_PI_2) * \
+		data->player.walkspeed * data->player.sidedirection;
+		data->player.y += -sin(data->player.rotatedirection + M_PI_2) * \
+		data->player.walkspeed * data->player.sidedirection;
+	}
+	if (data->player.walkdirection && !check_wall(data, 'W'))
+	{
+		data->player.x += cos(data->player.rotatedirection) * \
+		data->player.walkspeed * data->player.walkdirection;
+		data->player.y += -sin(data->player.rotatedirection) * \
+		data->player.walkspeed * data->player.walkdirection;
+	}
+	if (data->player.turndirection)
+		data->player.rotatedirection += data->player.turndirection * \
+		data->player.rotatespeed;
+	data->player.rotatedirection += data->player.mouse;
+	data->player.mouse = 0;
+}
+
 int	update(t_data *data)
 {
 	t_ray	*ray;
 
-	if (data->player.sidedirection && !check_wall(data, 'S'))
-	{
-		data->player.x += cos(data->player.rotatedirection + M_PI_2) * data->player.walkspeed * data->player.sidedirection;
-		data->player.y += -sin(data->player.rotatedirection + M_PI_2) * data->player.walkspeed * data->player.sidedirection;
-	}
-	if (data->player.walkdirection && !check_wall(data, 'W'))
-	{
-		data->player.x += cos(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection;
-		data->player.y += -sin(data->player.rotatedirection) * data->player.walkspeed * data->player.walkdirection;
-	}
-	if (data->player.turndirection)
-		data->player.rotatedirection += data->player.turndirection * data->player.rotatespeed;
-	data->player.rotatedirection += data->player.mouse;
-	data->player.mouse = 0;
 	mlx_clear_window(data->mlx, data->wind);
-	// mlx_destroy_image(data->mlx, data->img);
-	// data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
-	// data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel,&data->line_length, &data->endian);
+	update_player(data);
 	ray = update_ray(data);
 	rendring(data, ray);
 	mini_map(data, ray);
@@ -50,9 +57,10 @@ int	update(t_data *data)
 	return (0);
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	t_data data;
+	t_data	data;
+
 	if (ac != 2 || check_extension(av[1]))
 		return (1);
 	data.mapath = av[1];
@@ -61,6 +69,6 @@ int main(int ac, char **av)
 	mlx_loop_hook(data.mlx, update, &data);
 	mlx_hook(data.wind, 3, 0, keyprelease, &data);
 	mlx_hook(data.wind, 2, 0, keypress, &data);
-	mlx_hook(data.wind,6,0, mouse_hook, &data);
+	mlx_hook(data.wind, 6, 0, mouse_hook, &data);
 	mlx_loop(data.mlx);
 }

@@ -6,21 +6,16 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:44:52 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/20 15:59:17 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/21 16:24:45 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
 
-/*
-	(< : 123)  (>  :124)
-	(D : 2)  (A  :0)
-	(W : 13)  (S  :1)
-*/
-
-int keyprelease(int keycode, void *parm)
+int	keyprelease(int keycode, void *parm)
 {
-	t_data *data;
+	t_data	*data;
+
 	data = (t_data *)parm;
 	if (keycode == 124)
 		data->player.turndirection = 0;
@@ -34,12 +29,12 @@ int keyprelease(int keycode, void *parm)
 		data->player.sidedirection = 0;
 	if (keycode == 2)
 		data->player.sidedirection = 0;
-	return 0;
+	return (0);
 }
 
-int keypress(int keycode, void *parm)
+int	keypress(int keycode, void *parm)
 {
-	t_data *data;
+	t_data	*data;
 
 	data = (t_data *)parm;
 	if (keycode == 124)
@@ -57,19 +52,21 @@ int keypress(int keycode, void *parm)
 	if (keycode == 49)
 		data->player.shoot = 1;
 	if (keycode == 53)
-		exit(0);
-	return 0;
+		ft_exit(data, NULL);
+	return (0);
 }
 
-int mouse_hook(int x,int y,void *param)
+int	mouse_hook(int x, int y, void *param)
 {
-	t_data *data;
-	static int last_x;
-	float dx;
+	t_data		*data;
+	static int	last_x;
+	float		dx;
+
 	data = (t_data *)param;
 	dx = last_x - x;
 	if (y > 0 && y < HEIGHT)
-		data->player.mouse = atan(dx / data->mid_ray_d) * (data->player.rotatespeed);
+		data->player.mouse = atan(dx / data->mid_ray_d) * (0.4 + \
+		data->player.rotatespeed);
 	last_x = x;
-	return 0;
+	return (0);
 }

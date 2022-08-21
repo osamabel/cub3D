@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 16:12:35 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/20 16:12:36 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/21 16:24:45 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	read_map(t_data *data)
 
 	fd = open(data->mapath, O_RDONLY);
 	if (fd == -1)
-		ft_error(data, "The scene description file connot be found");
+		ft_exit(data, "The scene description file connot be found");
 	line = get_next_line(fd);
 	tmp_map = NULL;
 	while (line)
@@ -43,27 +43,35 @@ void	start_connection(t_data *data)
 	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel,
 			&data->line_length, &data->endian);
+	data->texture.wall_no = mlx_xpm_file_to_image(data->mlx, data->texture.no,
+			&data->texture.wall_w, &data->texture.wall_h);
+	data->texture.wall_so = mlx_xpm_file_to_image(data->mlx, data->texture.so,
+			&data->texture.wall_w, &data->texture.wall_h);
+	data->texture.wall_ea = mlx_xpm_file_to_image(data->mlx, data->texture.we,
+			&data->texture.wall_w, &data->texture.wall_h);
+	data->texture.wall_we = mlx_xpm_file_to_image(data->mlx, data->texture.ea,
+			&data->texture.wall_w, &data->texture.wall_h);
 }
 
-void check_path(t_data *data)
+void	check_path(t_data *data)
 {
-	int fd;
+	int	fd;
 
-	fd = open(data->texture.NO, O_RDONLY);
+	fd = open(data->texture.no, O_RDONLY);
 	if (fd == -1)
-		ft_error(data, "Error: NO texture path not found");
+		ft_exit(data, "Error: NO texture path not found");
 	close (fd);
-	fd = open(data->texture.EA, O_RDONLY);
+	fd = open(data->texture.ea, O_RDONLY);
 	if (fd == -1)
-		ft_error(data, "Error: EA texture path not found");
+		ft_exit(data, "Error: EA texture path not found");
 	close (fd);
-	fd = open(data->texture.SO, O_RDONLY);
+	fd = open(data->texture.so, O_RDONLY);
 	if (fd == -1)
-		ft_error(data, "Error: SO texture path not found");
+		ft_exit(data, "Error: SO texture path not found");
 	close (fd);
-	fd = open(data->texture.WE, O_RDONLY);
+	fd = open(data->texture.we, O_RDONLY);
 	if (fd == -1)
-		ft_error(data, "Error: WE texture path not found");
+		ft_exit(data, "Error: WE texture path not found");
 	close (fd);
 }
 
@@ -72,31 +80,23 @@ void	initial(t_data *data)
 	data->player.turndirection = 0;
 	data->player.walkdirection = 0;
 	data->player.sidedirection = 0;
-	data->player.rotatespeed = ROTATE_SPEED;
-	data->player.walkspeed = WALK_SPEED;
+	data->player.rotatespeed = 0.07;
+	data->player.walkspeed = 0.2;
 	data->row = 0;
 	data->col = 0;
-	data->texture.NO = NULL;
-	data->texture.SO = NULL;
-	data->texture.WE = NULL;
-	data->texture.EA = NULL;
-	data->texture.F = 0;
-	data->texture.C = 0;
+	data->player.shoot = 0;
+	data->texture.no = NULL;
+	data->texture.so = NULL;
+	data->texture.we = NULL;
+	data->texture.ea = NULL;
+	data->texture.floor = 0;
+	data->texture.sky = 0;
 	data->map = NULL;
 	read_map(data);
 	check_path(data);
 	start_connection(data);
-	data->texture.wall_NO = mlx_xpm_file_to_image(data->mlx, data->texture.NO,
-			&data->texture.no_w, &data->texture.no_h);
-	data->texture.wall_SO = mlx_xpm_file_to_image(data->mlx, data->texture.SO,
-			&data->texture.so_w, &data->texture.so_h);
-	data->texture.wall_EA = mlx_xpm_file_to_image(data->mlx, data->texture.WE,
-			&data->texture.ea_w, &data->texture.ea_h);
-	data->texture.wall_WE = mlx_xpm_file_to_image(data->mlx, data->texture.EA,
-			&data->texture.we_w, &data->texture.we_h);
-	data->texture.Door = mlx_xpm_file_to_image(data->mlx, "images/door.xpm",
-			&data->texture.door_w, &data->texture.door_h);
 }
+
 void	get_info(t_data *data)
 {
 	int	i;
