@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 16:59:35 by ael-hadd          #+#    #+#             */
-/*   Updated: 2022/08/21 16:24:45 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/21 17:03:12 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	meta_data(t_data *data, char *line)
 		data->texture.floor = extract_color(data, &line[i + 1]);
 }
 
-int	check_for_imposters(t_data *data, char *line)
+int	is_imposters(t_data *data, char *line)
 {
 	int	i;
 	int	len;
@@ -89,14 +89,15 @@ int	check_for_imposters(t_data *data, char *line)
 			ft_exit(data, "there is one imposter among us");
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
 void	map_parsing(t_data *data, char *line, char **tmp_map, int fd)
 {
 	char	*tmp;
+	static	int x;
 
-	if (is_texture(line))
+	if (is_texture(line) && x++ < 6)
 		meta_data(data, line);
 	else if (line[0] != '\n')
 	{
@@ -105,7 +106,7 @@ void	map_parsing(t_data *data, char *line, char **tmp_map, int fd)
 			ft_exit(data, "Error: some texture data info are missing");
 		while (line)
 		{
-			if (check_for_imposters(data, line))
+			if (!is_imposters(data, line))
 			{
 				if (data->col < (int)ft_strlen(line))
 					data->col = ft_strlen(line);

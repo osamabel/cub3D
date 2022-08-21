@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 08:37:48 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/21 16:24:28 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/21 18:31:13 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	draw_sky(t_data *data, int x, int y, int *alpha)
 {
 	if (y <= (HEIGHT / 2))
 	{
-		if (HEIGHT / 2 - y < 255)
+		if (HEIGHT / 2 - y <= 255)
 			(*alpha)++;
 		set_point(data, x, y);
 		put_pixel(data, data->texture.sky, *alpha);
@@ -27,7 +27,7 @@ void	draw_floor(t_data *data, int x, int y, int *alpha)
 {
 	if (y >= (HEIGHT / 2))
 	{
-		if (y - HEIGHT / 2 < 255)
+		if (*alpha > 0)
 			(*alpha)--;
 		set_point(data, x, y);
 		put_pixel(data, data->texture.floor, *alpha);

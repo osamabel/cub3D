@@ -6,7 +6,7 @@
 /*   By: obelkhad <obelkhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 08:55:04 by obelkhad          #+#    #+#             */
-/*   Updated: 2022/08/21 16:21:53 by obelkhad         ###   ########.fr       */
+/*   Updated: 2022/08/21 17:43:23 by obelkhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ int	update(t_data *data)
 {
 	t_ray	*ray;
 
-	mlx_clear_window(data->mlx, data->wind);
 	update_player(data);
 	ray = update_ray(data);
 	rendring(data, ray);
 	mini_map(data, ray);
 	sprite_gun(data);
+	mlx_clear_window(data->mlx, data->wind);
 	mlx_put_image_to_window(data->mlx, data->wind, data->img, 0, 0);
 	return (0);
 }
